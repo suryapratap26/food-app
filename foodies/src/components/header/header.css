@@ -1,0 +1,50 @@
+.header-container {
+    height: 100vh;
+    position: relative;
+}
+
+.background-video {
+    object-fit: cover;
+    z-index: 0;
+    filter: brightness(0.55);
+}
+
+.overlay {
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 1;
+}
+
+.text-gradient {
+    background: linear-gradient(90deg, #6610f2, #0d6efd);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hover-scale {
+    transition: all 0.3s ease;
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+}
+
+.animate-fade {
+    opacity: 0;
+    transform: translateY(15px);
+    animation: fadeInUp 1s ease forwards;
+}
+
+.animate-fade-delay {
+    opacity: 0;
+    transform: translateY(15px);
+    animation: fadeInUp 1s ease forwards;
+    animation-delay: 0.3s;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

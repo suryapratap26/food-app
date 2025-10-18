@@ -1,0 +1,22 @@
+
+.food-display {
+    min-height: 60vh;
+}
+
+.food-display h2 {
+    letter-spacing: 0.5px;
+}
+
+.food-display img {
+    user-select: none;
+}
+
+.food-display .text-muted {
+    font-size: 0.95rem;
+}
+
+@media (max-width: 576px) {
+    .food-display h2 {
+        font-size: 1.75rem;
+    }
+}

@@ -1,0 +1,35 @@
+.cart-item img {
+    max-width: 100px;
+    height: auto;
+    border-radius: 8px;
+}
+
+.quantity-input {
+    width: 50px;
+}
+
+.cart-summary {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+}
+
+.cart-item hr {
+    margin-top: 10px;
+    height: 1px;
+    background-color: #e2e2e2;
+}
+
+.quantity-selector button {
+    border-radius: 0.375rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.quantity-selector button:hover {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.cart-summary .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(13, 110, 253, 0.3);
+}

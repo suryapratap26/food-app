@@ -1,0 +1,55 @@
+.food-card {
+    transition: all 0.3s ease-in-out;
+}
+
+.food-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.food-image {
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.food-card:hover .food-image {
+    transform: scale(1.05);
+}
+
+.food-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(13, 110, 253, 0.3);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.food-card:hover .food-overlay {
+    opacity: 1;
+}
+
+.food-overlay .btn {
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.food-card:hover .food-overlay .btn {
+    transform: translateY(0);
+}
+
+.rating i {
+    font-size: 0.85rem;
+}
+
+.card-title {
+    font-size: 1.1rem;
+}
+
+.card-footer button {
+    transition: all 0.2s ease-in-out;
+}
+
+.card-footer button:hover {
+    transform: scale(1.05);
+}
