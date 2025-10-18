@@ -1,5 +1,5 @@
 import  { useContext, useState, useEffect } from 'react';
-import orderService from '../../service/OrderService.js';
+import orderService from '../../service/orderService.js';
 import { storeContext } from '../../context/StoreContext';
 import { toast } from 'react-toastify';
 import { asset } from '../../assets/asset'; 
