@@ -1,8 +1,8 @@
-import React, { useContext, useState, useEffect } from 'react';
-import OrderService from '../../service/OrderService.js'; // Adjust path as needed
+import  { useContext, useState, useEffect } from 'react';
+import orderService from '../../service/OrderService.js';
 import { storeContext } from '../../context/StoreContext';
 import { toast } from 'react-toastify';
-import { asset } from '../../assets/asset'; // Assuming you have an assets file
+import { asset } from '../../assets/asset'; 
 
 const MyOrder = () => {
     const { token } = useContext(storeContext);
@@ -19,8 +19,8 @@ const MyOrder = () => {
 
         try {
             setLoading(true);
-            // Use the service method to fetch orders
-            const fetchedOrders = await OrderService.getUserOrders(token);
+
+            const fetchedOrders = await orderService.getUserOrders(token);
             setOrders(fetchedOrders);
             setError(null);
         } catch (err) {
@@ -35,9 +35,8 @@ const MyOrder = () => {
 
     useEffect(() => {
         fetchOrders();
-    }, [token]); // Re-fetch only when the token changes (i.e., user logs in/out)
+    }, [token]);
 
-    // --- Loading and Error States ---
     if (loading) {
         return (
             <div className="container text-center py-5">
@@ -73,7 +72,6 @@ const MyOrder = () => {
         );
     }
 
-    // --- Main Order Display ---
     return (
         <div className="container my-5">
             <h2 className="text-primary mb-4 fw-bold">My Order History</h2>

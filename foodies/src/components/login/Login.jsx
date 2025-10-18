@@ -1,11 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
-import {loginUser} from "../../service/userService.js";
+import { loginUser } from "../../service/userService.js";
 import { toast } from "react-toastify";
 import { storeContext } from "../../context/StoreContext.jsx";
 
 const Login = () => {
-    const { setToken, loadCartData } = useContext(storeContext);
+    // Replaced loadCartData with loadProtectedData
+    const { setToken, loadProtectedData } = useContext(storeContext); 
     const navigate = useNavigate();
 
     const [data, setData] = useState({ email: "", password: "" });
@@ -21,23 +22,38 @@ const Login = () => {
         setIsLoading(true);
         try {
             const response = await loginUser(data);
-            if (response.status === 200) {
-                setToken(response.data.token);
-                await loadCartData(response.data.token);
-                localStorage.setItem("token", response.data.token);
+
+            // Assuming your backend returns { token: "...", ... }
+            if (response.token) {
+                // 1. Store token locally
+                localStorage.setItem("token", response.token); 
+                
+                // 2. Update state (This triggers the useEffect in StoreContext, setting the API header)
+                setToken(response.token); 
+                
+                // 3. Manually load cart and orders (redundant due to useEffect, but ensures immediate UI update)
+                // This call is now safe because setToken has updated the state and triggered the context's useEffect
+                await loadProtectedData(); 
+
                 toast.success("Login successful!");
                 navigate("/");
             } else {
-                toast.error(response.statusText);
+                // If login was successful but didn't return a token (unexpected)
+                toast.error("Invalid login response from server");
             }
-        } catch {
-            toast.error("Login failed. Please try again.");
+        } catch (error) {
+            // Error handling for failed network request or 401/400 from server
+            console.error("Login error:", error);
+            // Access the actual error message if it exists, otherwise use a generic message
+            const errorMessage = error?.response?.data?.message || "Login failed. Please check your credentials and network.";
+            toast.error(errorMessage);
         } finally {
             setIsLoading(false);
         }
     };
 
     return (
+        // ... rest of the component remains the same ...
         <div
             className="d-flex justify-content-center align-items-center min-vh-100"
             style={{

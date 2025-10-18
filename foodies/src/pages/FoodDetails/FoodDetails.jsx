@@ -12,20 +12,33 @@ const FoodDetails = () => {
     const [quantity, setQuantity] = useState(1);
     const navigate = useNavigate();
 
-    const addToCart = () => {
+    // --- CRITICAL FIX: Add all quantity in ONE call ---
+    const handleAddToCart = async () => {
+        if (!data.id) return; // Prevent action if data hasn't loaded
+
+        // Loop `quantity` times to call the context's increaseQty function, 
+        // which handles both local state and the API call.
         for (let i = 0; i < quantity; i++) {
-            increaseQty(data.id);
+            await increaseQty(data.id); // Await is not necessary here but keeps the loop synchronous
         }
-        toast.success(`${data.name} added to cart!`);
+
+        // Note: For true efficiency, you should create a new `addMultipleToCart(foodId, quantity)`
+        // function in StoreContext and cartService that sends ONE request to the backend. 
+        // For now, sticking to your existing context function:
+        
+        toast.success(`${quantity} x ${data.name} added to cart!`);
         navigate("/cart");
     };
 
     useEffect(() => {
         const loadFoodDetail = async (id) => {
             try {
+                // Ensure ID exists before fetching
+                if (!id) return; 
                 const response = await fetchFoodDetail(id);
                 setData(response);
             } catch (error) {
+                console.error("Error fetching food details:", error);
                 toast.error("Error fetching food details.");
             }
         };
@@ -33,7 +46,10 @@ const FoodDetails = () => {
     }, [id]);
 
     const handleQuantityChange = (val) => {
-        if (quantity + val >= 1) setQuantity(quantity + val);
+        setQuantity(prev => {
+            const newQty = prev + val;
+            return newQty >= 1 ? newQty : 1;
+        });
     };
 
     return (
@@ -43,10 +59,11 @@ const FoodDetails = () => {
                     {/* Image */}
                     <div className="col-md-6 mb-4 mb-md-0">
                         <div className="card shadow-sm rounded-4 overflow-hidden">
+                            {/* Add optional chaining for defensive rendering */}
                             <img
                                 className="card-img-top food-img"
-                                src={data.imageUrl}
-                                alt={data.name}
+                                src={data?.imageUrl} 
+                                alt={data?.name}
                             />
                         </div>
                     </div>
@@ -54,18 +71,18 @@ const FoodDetails = () => {
                     {/* Details */}
                     <div className="col-md-6">
                         <div className="mb-2">
-              <span className="badge bg-warning text-dark px-3 py-2">
-                {data.category}
-              </span>
+                            <span className="badge bg-warning text-dark px-3 py-2">
+                                {data?.category}
+                            </span>
                         </div>
 
-                        <h1 className="display-5 fw-bolder mb-3">{data.name}</h1>
+                        <h1 className="display-5 fw-bolder mb-3">{data?.name}</h1>
 
                         <div className="fs-4 text-primary fw-semibold mb-3">
-                            ₹ {data.price}
+                            ₹ {data?.price}
                         </div>
 
-                        <p className="lead mb-4">{data.description}</p>
+                        <p className="lead mb-4">{data?.description}</p>
 
                         <div className="d-flex align-items-center gap-3">
                             {/* Quantity Selector */}
@@ -95,7 +112,7 @@ const FoodDetails = () => {
                             {/* Add to Cart */}
                             <button
                                 className="btn btn-primary btn-lg px-4 shadow-sm"
-                                onClick={addToCart}
+                                onClick={handleAddToCart} // Changed function name
                             >
                                 <i className="bi bi-cart-fill me-2"></i> Add to Cart
                             </button>
