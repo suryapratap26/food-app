@@ -6,11 +6,11 @@ import ContactUs from './pages/contact/Contact'
 import FoodDetails from './pages/FoodDetails/FoodDetails'
 import Cart from './pages/cart/Cart'
 import PlaceOrder from './pages/place-order/PlaceOrder'
-import Login from './components/login/login'
+import Login from './components/login/Login'
 import Register from './components/register/Register'
 import { ToastContainer} from 'react-toastify';
-import Footer from "./components/footer/Footer.jsx";
-import MyOrder from "./pages/MyOrder/MyOrder.jsx";
+import Footer from "./components/footer/Footer";
+import MyOrder from "./pages/MyOrder/MyOrder";
 const App = () => {
   return (
     <div>
