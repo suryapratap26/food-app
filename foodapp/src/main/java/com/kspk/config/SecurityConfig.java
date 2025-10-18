@@ -11,15 +11,14 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.CorsFilter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
 
@@ -28,9 +27,11 @@ import java.util.List;
 public class SecurityConfig
 {
     @Value("${FRONTENDURL}")
-    private String forntendUrl;
-    private final UserDetailsService userDetailsService;
+    private String frontendUrl;
+
+    private final CustomUserDetailsService userDetailsService;
     private final JwtFilter jwtFilter;
+
     public SecurityConfig(CustomUserDetailsService userDetailsService, JwtFilter jwtFilter) {
         this.userDetailsService = userDetailsService;
         this.jwtFilter = jwtFilter;
@@ -41,18 +42,8 @@ public class SecurityConfig
         http.csrf(csrf->csrf.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth->auth
-                        // 1. PUBLIC ENDPOINTS (Corrected Food API typo)
                         .requestMatchers("/api/register", "/api/login", "/api/food/**").permitAll()
-                        // Note: Removed "/api/orders/**" from here.
-
-                        // 2. AUTHENTICATED ENDPOINTS (FIXED ORDER API ACCESS)
-                        // This requires a valid JWT for the Order API
-                        .requestMatchers("/api/orders/**").authenticated()
-
-                        // 3. Ensure other authenticated endpoints (like /api/cart) are also covered
-                        .requestMatchers("/api/cart/**").authenticated()
-
-                        // 4. CATCH-ALL: Authenticate any other request
+                        .requestMatchers("/api/orders/**", "/api/cart/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -60,24 +51,27 @@ public class SecurityConfig
 
         return http.build();
     }
+
     @Bean
-   public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public CorsFilter corsFilter(){
-        return new CorsFilter(corsConfugrationSource());
-}
-private UrlBasedCorsConfigurationSource corsConfugrationSource(){
-    CorsConfiguration config=new CorsConfiguration();
-    config.setAllowedOrigins(List.of("http://localhost:5173/",forntendUrl));
-    config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE","OPTIONS","PATCH"));
-    config.setAllowedHeaders(List.of("Authorization","Content-Type"));
-    config.setAllowCredentials(true);
+        return new CorsFilter(corsConfigurationSource()); // Corrected method name
+    }
 
-    UrlBasedCorsConfigurationSource source=new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**",config);
-    return source;
+    private UrlBasedCorsConfigurationSource corsConfigurationSource(){ // Corrected method name
+        CorsConfiguration config=new CorsConfiguration();
+        config.setAllowedOrigins(List.of("http://localhost:5173", frontendUrl));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE","OPTIONS","PATCH"));
+        config.setAllowedHeaders(List.of("Authorization","Content-Type"));
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source=new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**",config);
+        return source;
     }
 
     @Bean
@@ -85,8 +79,6 @@ private UrlBasedCorsConfigurationSource corsConfugrationSource(){
         DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
-        return  new ProviderManager(authenticationProvider);
-
+        return new ProviderManager(authenticationProvider);
     }
 }
-

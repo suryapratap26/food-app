@@ -1,4 +1,4 @@
-// src/pages/place-order/initiateStripePayment.js
+
 import { toast } from "react-toastify";
 import { CardElement } from "@stripe/react-stripe-js";
 import OrderService from "../../service/OrderService.js";

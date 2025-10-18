@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { registerUser } from "../../service/AppService.js";
+import { registerUser } from "../../service/userService.js";
 
 const Register = () => {
     const [data, setData] = useState({

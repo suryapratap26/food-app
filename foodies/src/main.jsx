@@ -7,12 +7,12 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { StoreContextProivder } from './context/StoreContext.jsx';
+import { StoreContextProvider } from './context/StoreContext';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <StoreContextProivder>
+    <StoreContextProvider>
       <App />
-    </StoreContextProivder>
+    </StoreContextProvider>
   </BrowserRouter>
 );

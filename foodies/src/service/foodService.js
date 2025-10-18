@@ -1,26 +1,46 @@
-import axios from 'axios'
+import { apiClient } from "./apiClient";
 
-const API_URL=`${import.meta.env.VITE_BACKEND_URL}`
-  
-export const fetchFoodList=async()=>{
-     try {
-       const response= await axios.get(`${API_URL}/api/food`);
-    return response.data; 
-     } catch (error) {
-        console.log(error)
-     }
+export const fetchFoodList = async () => {
+    try {
+        const response = await apiClient.get("/api/food");
+        return response.data; // List<FoodResponse>
+    } catch (error) {
+        console.error("fetchFoodList error:", error);
+        throw error;
     }
+};
 
-   export  const fetchFoodDetail=async(id)=>{
-   try {
-      const response= await axios.get(`${API_URL}/api/food/`+id)
-    
-      return response.data;
-    
-   } catch (error) {
-      console.log(error)
-   }
+export const fetchFoodDetail = async (id) => {
+    try {
+        const response = await apiClient.get(`/api/food/${id}`);
+        return response.data; // FoodResponse
+    } catch (error) {
+        console.error("fetchFoodDetail error:", error);
+        throw error;
+    }
+};
 
+export const addFood = async (foodData, file) => {
+    try {
+        const formData = new FormData();
+        formData.append("food", JSON.stringify(foodData));
+        formData.append("file", file);
 
+        const response = await apiClient.post("/api/food", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
+        return response.data; // FoodResponse
+    } catch (error) {
+        console.error("addFood error:", error);
+        throw error;
+    }
+};
 
-}
+export const deleteFood = async (id) => {
+    try {
+        await apiClient.delete(`/api/food/${id}`);
+    } catch (error) {
+        console.error("deleteFood error:", error);
+        throw error;
+    }
+};

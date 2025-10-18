@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
-import { login } from "../../service/AppService.js";
+import {loginUser} from "../../service/userService.js";
 import { toast } from "react-toastify";
 import { storeContext } from "../../context/StoreContext.jsx";
 
@@ -20,7 +20,7 @@ const Login = () => {
         e.preventDefault();
         setIsLoading(true);
         try {
-            const response = await login(data);
+            const response = await loginUser(data);
             if (response.status === 200) {
                 setToken(response.data.token);
                 await loadCartData(response.data.token);
