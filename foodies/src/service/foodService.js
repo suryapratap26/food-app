@@ -3,7 +3,7 @@ import { apiClient } from "./apiClient";
 export const fetchFoodList = async () => {
     try {
         const response = await apiClient.get("/api/food");
-        return response.data; // List<FoodResponse>
+        return response.data; 
     } catch (error) {
         console.error("fetchFoodList error:", error);
         throw error;

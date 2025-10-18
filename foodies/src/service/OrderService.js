@@ -1,47 +1,72 @@
-import axios from "axios";
+import { apiClient } from "./apiClient";
 
-const API_BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/api/orders`;
-
-const OrderService = {
-    createOrder: async (orderData, token) => {
-        const config = { headers: { Authorization: `Bearer ${token}` } };
-        try {
-            const response = await axios.post(`${API_BASE_URL}/create`, orderData, config);
-
-            // Handle both possible structures
-            const payload = response.data?.data || response.data;
-            if (payload && payload.stripeClientSecret) {
-                return payload;
-            }
-            console.error("Invalid order creation response:", response.data);
-            throw new Error("Missing order/payment data from server.");
-        } catch (error) {
-            console.error("OrderService.createOrder error:", error);
-            throw error;
-        }
-    },
-
-    verifyPayment: async (verificationData, token) => {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-            },
-        };
-        try {
-            const response = await axios.post(`${API_BASE_URL}/verify`, verificationData, config);
-            return response.data;
-        } catch (error) {
-            console.error("OrderService.verifyPayment error:", error);
-            throw error;
-        }
-    },
-
-    getUserOrders: async (token) => {
-        const config = { headers: { Authorization: `Bearer ${token}` } };
-        const response = await axios.get(API_BASE_URL, config);
-        return response.data;
-    },
+// ------------------- ORDER FUNCTIONS -------------------
+const createOrder = async (orderData) => {
+    try {
+        const response = await apiClient.post("/api/orders/create", orderData);
+        return response.data; // OrderResponse with stripeClientSecret
+    } catch (error) {
+        console.error("createOrder error:", error);
+        throw error;
+    }
 };
 
-export default OrderService;
+const verifyPayment = async (verificationData) => {
+    try {
+        const response = await apiClient.post("/api/orders/verify", verificationData);
+        return response.data; // success message
+    } catch (error) {
+        console.error("verifyPayment error:", error);
+        throw error;
+    }
+};
+
+const getUserOrders = async () => {
+    try {
+        const response = await apiClient.get("/api/orders");
+        return response.data; // List<OrderResponse>
+    } catch (error) {
+        console.error("getUserOrders error:", error);
+        throw error;
+    }
+};
+
+const getAllOrders = async () => {
+    try {
+        const response = await apiClient.get("/api/orders/all");
+        return response.data; // List<OrderResponse>
+    } catch (error) {
+        console.error("getAllOrders error:", error);
+        throw error;
+    }
+};
+
+const updateOrderStatus = async (orderId, status) => {
+    try {
+        const response = await apiClient.put(`/api/orders/${orderId}`, status);
+        return response.data;
+    } catch (error) {
+        console.error("updateOrderStatus error:", error);
+        throw error;
+    }
+};
+
+const removeOrder = async (orderId) => {
+    try {
+        await apiClient.delete(`/api/orders/${orderId}`);
+    } catch (error) {
+        console.error("removeOrder error:", error);
+        throw error;
+    }
+};
+
+const orderService = {
+    createOrder,
+    verifyPayment,
+    getUserOrders,
+    getAllOrders,
+    updateOrderStatus,
+    removeOrder,
+};
+
+export default orderService;

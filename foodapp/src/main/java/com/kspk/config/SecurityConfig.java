@@ -62,7 +62,7 @@ public class SecurityConfig
         return new CorsFilter(corsConfigurationSource()); // Corrected method name
     }
 
-    private UrlBasedCorsConfigurationSource corsConfigurationSource(){ // Corrected method name
+    private UrlBasedCorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration config=new CorsConfiguration();
         config.setAllowedOrigins(List.of("http://localhost:5173", frontendUrl));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE","OPTIONS","PATCH"));

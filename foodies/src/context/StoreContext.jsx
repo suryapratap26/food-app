@@ -6,20 +6,18 @@ import {
     removeFromCart as removeCartItem,
     getCartItems,
 } from "../service/cartService";
-import OrderService from "../service/orderService";
+import orderService from "../service/orderService";
 import { setAuthToken } from "../service/apiClient";
 
 export const storeContext = createContext(null);
 
 export const StoreContextProvider = ({ children }) => {
-    // ------------------- STATE -------------------
     const [foodList, setFoodList] = useState([]);
     const [quantities, setQuantities] = useState({});
     const [token, setToken] = useState("");
     const [orders, setOrders] = useState([]);
 
-    // ------------------- TOKEN HANDLING -------------------
-    useEffect(() => {
+     useEffect(() => {
         setAuthToken(token);
         if (token) {
             loadCartData();
@@ -42,7 +40,6 @@ export const StoreContextProvider = ({ children }) => {
         loadData();
     }, []);
 
-    // ------------------- CART FUNCTIONS -------------------
     const increaseQty = async (foodId) => {
         try {
             setQuantities((prev) => ({ ...prev, [foodId]: (prev[foodId] || 0) + 1 }));
@@ -98,7 +95,7 @@ export const StoreContextProvider = ({ children }) => {
     // ------------------- ORDER FUNCTIONS -------------------
     const createOrder = async (orderData) => {
         try {
-            const order = await OrderService.createOrder(orderData);
+            const order = await orderService.createOrder(orderData);
             await clearAllCart(); // Clear cart after successful order
             setOrders((prev) => [...prev, order]);
             return order;
@@ -110,7 +107,7 @@ export const StoreContextProvider = ({ children }) => {
 
     const verifyPayment = async (verificationData) => {
         try {
-            const result = await OrderService.verifyPayment(verificationData);
+            const result = await orderService.verifyPayment(verificationData);
             return result;
         } catch (error) {
             console.error("verifyPayment error:", error);
@@ -120,7 +117,7 @@ export const StoreContextProvider = ({ children }) => {
 
     const loadUserOrders = async () => {
         try {
-            const userOrders = await OrderService.getUserOrders();
+            const userOrders = await orderService.getUserOrders();
             setOrders(userOrders || []);
         } catch (error) {
             console.error("loadUserOrders error:", error);
@@ -129,14 +126,13 @@ export const StoreContextProvider = ({ children }) => {
 
     const removeOrder = async (orderId) => {
         try {
-            await OrderService.removeOrder(orderId);
+            await orderService.removeOrder(orderId);
             setOrders((prev) => prev.filter((order) => order.id !== orderId));
         } catch (error) {
             console.error("removeOrder error:", error);
         }
     };
 
-    // ------------------- CONTEXT VALUE -------------------
     const contextValue = {
         foodList,
         quantities,
