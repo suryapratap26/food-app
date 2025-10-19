@@ -19,12 +19,18 @@ const ExploreFood = () => {
                                     onChange={(e) => setCategory(e.target.value)}
                                 >
                                     <option value="All">All</option>
-                                    <option value="pizza">Pizzas</option>
+                                    
+                                    <option value="biryani">Biryani</option>
                                     <option value="burger">Burger</option>
-                                    <option value="side">Sides</option>
-                                    <option value="dessert">Desserts</option>
-                                    <option value="drink">Drinks</option>
+                                    <option value="cakes">Cakes</option>
+                                    <option value="icecreame">Ice Cream</option>
+                                    <option value="pizza">Pizza</option>
+                                    <option value="rolls">Rolls</option>
+                                    <option value="salad">Salad</option>
+                                    
                                 </select>
+                                
+                                
                                 <input
                                     type="text"
                                     className="form-control"
@@ -41,7 +47,7 @@ const ExploreFood = () => {
                 </div>
             </div>
 
-            <FoodDisplay category={category} searchText={searchText} />
+           <FoodDisplay category={category} searchText={searchText} />
         </>
     );
 };
