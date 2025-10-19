@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import PaymentSection from "./PaymentSection";
 
-// Load stripe publishable key from env (Vite)
 const STRIPE_PUBLIC_KEY = import.meta.env.VITE_STRIPE_PUBLIC_KEY;
 const stripePromise = STRIPE_PUBLIC_KEY ? loadStripe(STRIPE_PUBLIC_KEY) : null;
 
@@ -31,7 +30,6 @@ const PlaceOrder = () => {
       toast.warn("Your cart is empty. Redirecting to cart.");
       navigate("/cart");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartItems.length, token]);
 
   const [data, setData] = useState({
@@ -52,7 +50,6 @@ const PlaceOrder = () => {
   };
 
   const onSubmitHandler = (e) => {
-    // The actual submission happens inside PaymentSection
     e.preventDefault();
   };
 
@@ -75,7 +72,7 @@ const PlaceOrder = () => {
         description: item.description,
         name: item.name,
       })),
-      amount: parseFloat(Number(total).toFixed(2)), // numeric total
+      amount: parseFloat(Number(total).toFixed(2)), 
       orderStatus: "preparing",
     };
   }, [data, total, cartItems, quantities]);

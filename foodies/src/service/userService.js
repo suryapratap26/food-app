@@ -1,21 +1,31 @@
 import { apiClient } from "./apiClient";
 
-export const registerUser = async (data) => {
+export const loginUser = async (data) => {
     try {
-        const response = await apiClient.post("/api/register", data);
-        return response.data; // UserResponse
+        const response = await apiClient.post("/api/login", data);
+        return response.data; 
     } catch (error) {
-        console.error("registerUser error:", error);
+        console.error("loginUser error:", error);
         throw error;
     }
 };
 
-export const loginUser = async (data) => {
+export const registerUser = async (data) => {
     try {
-        const response = await apiClient.post("/api/login", data);
-        return response.data; // AuthenticationResponse
+        const response = await apiClient.post("/api/register", data);
+        
+        if (response.data) {
+           const loginResponse = await loginUser({ 
+                email: data.email, 
+                password: data.password 
+            });
+            
+          return loginResponse; 
+        } 
+        
+        return response.data; 
     } catch (error) {
-        console.error("loginUser error:", error);
+        console.error("registerUser error:", error);
         throw error;
     }
 };

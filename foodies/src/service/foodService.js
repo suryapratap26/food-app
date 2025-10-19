@@ -13,7 +13,7 @@ export const fetchFoodList = async () => {
 export const fetchFoodDetail = async (id) => {
     try {
         const response = await apiClient.get(`/api/food/${id}`);
-        return response.data; // FoodResponse
+        return response.data;  
     } catch (error) {
         console.error("fetchFoodDetail error:", error);
         throw error;
@@ -29,7 +29,7 @@ export const addFood = async (foodData, file) => {
         const response = await apiClient.post("/api/food", formData, {
             headers: { "Content-Type": "multipart/form-data" },
         });
-        return response.data; // FoodResponse
+        return response.data; 
     } catch (error) {
         console.error("addFood error:", error);
         throw error;

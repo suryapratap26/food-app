@@ -22,7 +22,7 @@ const PaymentSection = ({ billingData, orderData, token, cartItems, clearCart, n
     if (!billingData.firstName || !billingData.lastName) return "Full name required.";
     if (!billingData.email) return "Email required.";
     if (!billingData.address) return "Address required.";
-    // simple email format check
+ 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(billingData.email)) return "Invalid email address.";
     return null;
@@ -56,7 +56,6 @@ const PaymentSection = ({ billingData, orderData, token, cartItems, clearCart, n
     try {
       toast.info("Creating order and securing payment intent...");
 
-      // Create order (apiClient handles token globally)
       const responseData = await orderService.createOrder(orderData);
 
       if (!responseData?.stripeClientSecret) {

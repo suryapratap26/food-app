@@ -38,7 +38,6 @@ const ExploreMenu = ({ category, setCategory }) => {
                 Order from our best food options
             </p>
 
-            {/* Scrollable Categories */}
             <div ref={menuRef} className="d-flex overflow-auto gap-4 pb-3 scroll-snap">
                 {categories.map((item, index) => {
                     const isActive = item.category === category;

@@ -9,7 +9,6 @@ const Cart = () => {
     useContext(storeContext);
   const navigate = useNavigate();
 
-  // ✅ Define cartItems first
   const cartItems = foodList.filter((food) => quantities[food.id] > 0);
   const isReadyForCheckout = cartItems.length > 0 && token;
 

@@ -6,7 +6,6 @@ const Footer = () => {
     <footer className="bg-dark text-white pt-5 pb-3 ">
       <div className="container">
         <div className="row">
-          {/* Logo and About */}
           <div className="col-md-4 mb-4">
             <img
               src={asset.logo}
@@ -21,7 +20,6 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Quick Links */}
           <div className="col-md-4 mb-4">
             <h5 className="mb-3">Quick Links</h5>
             <ul className="list-unstyled">
@@ -48,7 +46,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact Info */}
           <div className="col-md-4 mb-4">
             <h5 className="mb-3">Contact</h5>
            

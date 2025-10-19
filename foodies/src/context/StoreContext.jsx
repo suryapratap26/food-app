@@ -7,8 +7,7 @@ import {
     getCartItems,
 } from "../service/cartService";
 import orderService from "../service/orderService";
-import { setAuthToken } from "../service/apiClient"; // Import setAuthToken
-
+import { setAuthToken } from "../service/apiClient"; 
 export const storeContext = createContext(null);
 
 export const StoreContextProvider = ({ children }) => {
@@ -17,35 +16,26 @@ export const StoreContextProvider = ({ children }) => {
     const [token, setToken] = useState("");
     const [orders, setOrders] = useState([]);
 
-    // --- Core Data Loading Function (Protected Routes) ---
-    // This function encapsulates loading data that requires authentication.
-    const loadProtectedData = async () => {
+     const loadProtectedData = async () => {
         try {
             if (token) {
-                // Load Cart Data
                 const cart = await getCartItems();
                 setQuantities(cart.items || {});
                 
-                // Load User Orders
-                const userOrders = await orderService.getUserOrders();
+                 const userOrders = await orderService.getUserOrders();
                 setOrders(userOrders || []);
             }
         } catch (error) {
-            // Log 401 Unauthorized errors gracefully
             console.error("loadProtectedData failed (Cart/Orders):", error);
-            // Optionally, force logout if a persistent token is rejected
-        }
+         }
     };
 
-    // --- Initial Load Effect (Unprotected and Token Setup) ---
     useEffect(() => {
         const loadInitialData = async () => {
             try {
-                // 1. Load Food List (Unprotected)
                 const foods = await fetchFoodList();
                 setFoodList(foods);
 
-                // 2. Load Token from storage
                 const savedToken = localStorage.getItem("token");
                 if (savedToken) {
                     setToken(savedToken);
@@ -58,38 +48,29 @@ export const StoreContextProvider = ({ children }) => {
             }
         };
         loadInitialData();
-    }, []); // Runs only on mount
+    }, []); 
 
-    // --- Token Change Effect (Handles Login/Logout) ---
-    // This effect runs whenever the 'token' state changes (i.e., user logs in or out).
     useEffect(() => {
         if (token) {
-            // Set header for all subsequent API calls
             setAuthToken(token);
-            // Load protected data immediately after token is set
             loadProtectedData();
         } else {
-            // Clear header on logout
             setAuthToken(null);
-            setQuantities({}); // Clear quantities on logout
-            setOrders([]);     // Clear orders on logout
+            setQuantities({});
+            setOrders([]);     
         }
     }, [token]);
 
-    // ------------------- CART FUNCTIONS (A-sync with local state update) -------------------
-    
-    // Note: The structure of increaseQty/decreaseQty is generally correct (optimistic local update followed by API call).
     const increaseQty = async (foodId) => {
         if (!token) {
              console.log("User not logged in. Cannot add to cart.");
-             return; // Prevent API call if not logged in
+             return; 
         }
         setQuantities((prev) => ({ ...prev, [foodId]: (prev[foodId] || 0) + 1 }));
         try {
             await addToCart(foodId);
         } catch (error) {
             console.error("increaseQty error:", error);
-            // Revert optimistic update on failure
             setQuantities((prev) => ({ ...prev, [foodId]: prev[foodId] > 0 ? prev[foodId] - 1 : 0 }));
         }
     };
@@ -99,7 +80,6 @@ export const StoreContextProvider = ({ children }) => {
         const currentQty = quantities[foodId] || 0;
         if (currentQty <= 0) return;
 
-        // Optimistic update
         setQuantities((prev) => ({
             ...prev,
             [foodId]: currentQty - 1,
@@ -109,7 +89,6 @@ export const StoreContextProvider = ({ children }) => {
             await removeCartItem(foodId);
         } catch (error) {
             console.error("decreaseQty error:", error);
-            // Revert optimistic update on failure
             setQuantities((prev) => ({ ...prev, [foodId]: currentQty }));
         }
     };
@@ -117,7 +96,6 @@ export const StoreContextProvider = ({ children }) => {
     const removeFromCart = async (foodId) => {
         if (!token) return;
         
-        // Optimistic update
         setQuantities((prev) => {
             const updated = { ...prev };
             delete updated[foodId];
@@ -128,7 +106,6 @@ export const StoreContextProvider = ({ children }) => {
             await removeCartItem(foodId);
         } catch (error) {
             console.error("removeFromCart error:", error);
-            // Re-load the correct cart state on failure
             loadProtectedData(); 
         }
     };
@@ -136,7 +113,6 @@ export const StoreContextProvider = ({ children }) => {
     const clearAllCart = async () => {
         if (!token) return;
         
-        // Optimistic update
         const originalQuantities = quantities;
         setQuantities({});
 
@@ -144,26 +120,19 @@ export const StoreContextProvider = ({ children }) => {
             await clearCart();
         } catch (error) {
             console.error("clearAllCart error:", error);
-            // Revert on failure
             setQuantities(originalQuantities);
         }
     };
 
-    // ------------------- ORDER FUNCTIONS -------------------
-    // Removed the redundant loadUserOrders function as it's now part of loadProtectedData
-
-    const createOrder = async (orderData) => {
+   const createOrder = async (orderData) => {
         try {
             const order = await orderService.createOrder(orderData);
-            // Clear cart logic moved here for direct sequencing
             await clearAllCart(); 
-            // Update state with new order
             setOrders((prev) => [order, ...prev]); 
             return order;
         } catch (error) {
             console.error("createOrder error:", error);
-            throw error; // Re-throw so component can handle payment error
-        }
+            throw error;     }
     };
 
     const verifyPayment = async (verificationData) => {
@@ -199,7 +168,7 @@ export const StoreContextProvider = ({ children }) => {
         setQuantities,
         token,
         setToken,
-        loadProtectedData, // Expose for use in Login/Register
+        loadProtectedData, 
     };
 
     return (
