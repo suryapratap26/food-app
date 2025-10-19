@@ -3,6 +3,7 @@ import { storeContext } from "../../context/StoreContext";
 import FoodCard from "../foodCard/FoodCard";
 import "./foodDisplay.css";
 import { Link } from "react-router-dom"; 
+
 const FoodDisplay = ({ category, searchText, isHomeView = false }) => {
     const { foodList } = useContext(storeContext);
     const [filteredFood, setFilteredFood] = useState([]);
@@ -12,14 +13,16 @@ const FoodDisplay = ({ category, searchText, isHomeView = false }) => {
         let newFilteredFood = [];
 
         const initialFiltered = foodList.filter((food) => {
-            const matchesCategory = category === "All" || food.category === category;
+             const matchesCategory = category === "All" || food.category === category;
             const matchesSearch =
                 food.name.toLowerCase().includes(normalizedSearch) ||
                 food.description?.toLowerCase().includes(normalizedSearch);
             return matchesCategory && matchesSearch;
         });
 
-        if (isHomeView) {
+       const shouldLimitDisplay = isHomeView && category === "All";
+
+        if (shouldLimitDisplay) {
             const addedCategories = new Set();
             for (const food of initialFiltered) {
                 if (!addedCategories.has(food.category)) {
@@ -28,17 +31,17 @@ const FoodDisplay = ({ category, searchText, isHomeView = false }) => {
                 }
             }
         } else {
-           
             newFilteredFood = initialFiltered;
         }
 
         setFilteredFood(newFilteredFood);
     }, [category, searchText, foodList, isHomeView]); 
+    
     return (
         <div className="container py-4 food-display">
             <div className="text-center mb-5">
                 <h2 className="fw-bold text-primary display-6">
-                    {category === "All" && isHomeView ? "Featured Dishes" : 
+                    {isHomeView && category === "All" ? "Featured Dishes" : 
                      category === "All" ? "All Dishes" : `${category} Dishes`}
                 </h2>
                 <p className="text-muted">
@@ -74,7 +77,7 @@ const FoodDisplay = ({ category, searchText, isHomeView = false }) => {
                 )}
             </div>
 
-           {isHomeView && (
+            {isHomeView && category === "All" && (
                 <div className="text-center mt-5">
                     <Link to="/explore" className="btn btn-lg btn-outline-primary">
                         <i className="bi bi-arrow-right-circle me-2"></i> View All Food Items

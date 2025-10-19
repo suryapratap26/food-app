@@ -32,7 +32,7 @@ const Menubar = () => {
                         alt="App logo"
                         className="rounded-circle"
                     />
-                    <span className="fw-bold text-primary fs-5">FoodHaven</span>
+                    <span className="fw-bold text-primary fs-5">KSPK Foods</span>
                 </Link>
 
                 <button
@@ -47,7 +47,6 @@ const Menubar = () => {
                     <span className="navbar-toggler-icon"></span>
                 </button>
 
-                {/* Nav Links */}
                 <div className="collapse navbar-collapse" id="navbarMenu">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li className="nav-item">
