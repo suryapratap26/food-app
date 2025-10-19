@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { storeContext } from "../../context/StoreContext.jsx";
 
 const Login = () => {
-    // Replaced loadCartData with loadProtectedData
+
     const { setToken, loadProtectedData } = useContext(storeContext); 
     const navigate = useNavigate();
 
@@ -23,28 +23,20 @@ const Login = () => {
         try {
             const response = await loginUser(data);
 
-            // Assuming your backend returns { token: "...", ... }
             if (response.token) {
-                // 1. Store token locally
                 localStorage.setItem("token", response.token); 
                 
-                // 2. Update state (This triggers the useEffect in StoreContext, setting the API header)
                 setToken(response.token); 
                 
-                // 3. Manually load cart and orders (redundant due to useEffect, but ensures immediate UI update)
-                // This call is now safe because setToken has updated the state and triggered the context's useEffect
-                await loadProtectedData(); 
+                 await loadProtectedData(); 
 
                 toast.success("Login successful!");
                 navigate("/");
             } else {
-                // If login was successful but didn't return a token (unexpected)
-                toast.error("Invalid login response from server");
+                 toast.error("Invalid login response from server");
             }
         } catch (error) {
-            // Error handling for failed network request or 401/400 from server
             console.error("Login error:", error);
-            // Access the actual error message if it exists, otherwise use a generic message
             const errorMessage = error?.response?.data?.message || "Login failed. Please check your credentials and network.";
             toast.error(errorMessage);
         } finally {
@@ -53,8 +45,7 @@ const Login = () => {
     };
 
     return (
-        // ... rest of the component remains the same ...
-        <div
+         <div
             className="d-flex justify-content-center align-items-center min-vh-100"
             style={{
                 background: "linear-gradient(135deg, #6610f2, #0d6efd)",

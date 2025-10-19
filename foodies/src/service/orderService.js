@@ -1,9 +1,6 @@
 import { apiClient } from "./apiClient";
 
-/**
- * Centralized order service for frontend API calls.
- * - Throws Error objects with readable messages for UI consumption.
- */
+
 
 const handleError = (error) => {
   const message =

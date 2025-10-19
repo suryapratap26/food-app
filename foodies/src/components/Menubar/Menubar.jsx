@@ -23,7 +23,7 @@ const Menubar = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top py-2 menubar">
             <div className="container">
-                {/* Logo */}
+            
                 <Link to="/" className="navbar-brand d-flex align-items-center gap-2">
                     <img
                         src={asset.logo}
@@ -35,7 +35,6 @@ const Menubar = () => {
                     <span className="fw-bold text-primary fs-5">FoodHaven</span>
                 </Link>
 
-                {/* Mobile toggle */}
                 <button
                     className="navbar-toggler"
                     type="button"
@@ -90,9 +89,9 @@ const Menubar = () => {
                         </li>
                     </ul>
 
-                    {/* Right section */}
+                   
                     <div className="d-flex align-items-center gap-3">
-                        {/* Cart */}
+                       
                         <Link to="/cart" className="position-relative">
                             <img
                                 src={asset.cart}
@@ -108,7 +107,7 @@ const Menubar = () => {
                             )}
                         </Link>
 
-                        {/* Auth Buttons */}
+                       
                         {!token ? (
                             <>
                                 <button

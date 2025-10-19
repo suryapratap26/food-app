@@ -2,18 +2,7 @@ import { toast } from "react-toastify";
 import { CardElement } from "@stripe/react-stripe-js";
 import orderService from "../../service/orderService";
 
-/**
- * Confirms the Stripe PaymentIntent client-side and verifies the payment with backend.
- *
- * - responseData: { stripeClientSecret }
- * - elements: stripe elements instance
- * - stripe: stripe instance
- * - billingData: object with firstName, lastName, email, address, city, state, zipcode, country
- * - clearCart: async fn to clear frontend cart state
- * - navigate: optional navigate fn
- *
- * Returns: { success: boolean, paymentIntent?: object }
- */
+
 const initiateStripePayment = async (
   responseData,
   elements,
@@ -37,7 +26,6 @@ const initiateStripePayment = async (
       return { success: false };
     }
 
-    // Confirm card payment with billing details
     const result = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
         card: cardElement,
@@ -56,7 +44,6 @@ const initiateStripePayment = async (
     });
 
     if (result.error) {
-      // Common errors: card declined, validation, authentication required, etc.
       console.error("Stripe error:", result.error);
       toast.error(result.error.message || "Payment failed. Check card details and address.");
       return { success: false };
@@ -68,28 +55,24 @@ const initiateStripePayment = async (
       return { success: false };
     }
 
-    // If requires_action or other statuses, let user know
     if (paymentIntent.status === "requires_action" || paymentIntent.status === "requires_source_action") {
       toast.info("Additional authentication required. Please follow the prompt.");
       return { success: false, paymentIntent };
     }
 
     if (paymentIntent.status === "succeeded") {
-      // Verify with backend to mark order as paid & store payment details
-      try {
+       try {
         await orderService.verifyPayment({
           stripePaymentIntentId: paymentIntent.id,
           status: paymentIntent.status,
         });
 
-        // If backend verified, clear cart and navigate
         if (typeof clearCart === "function") await clearCart();
         toast.success("🎉 Payment Successful! Order confirmed and cart cleared.");
         if (typeof navigate === "function") navigate("/myorders");
         return { success: true, paymentIntent };
       } catch (verifyErr) {
-        // Backend verification failed. This is critical to surface.
-        console.error("Backend verification failed:", verifyErr);
+         console.error("Backend verification failed:", verifyErr);
         toast.error(
           "Payment succeeded, but we couldn't verify it on the server. Please check your orders page or contact support."
         );
@@ -97,8 +80,7 @@ const initiateStripePayment = async (
       }
     }
 
-    // Other statuses
-    toast.info(`Payment status: ${paymentIntent.status}.`);
+     toast.info(`Payment status: ${paymentIntent.status}.`);
     return { success: false, paymentIntent };
   } catch (err) {
     console.error("Payment confirmation error:", err);

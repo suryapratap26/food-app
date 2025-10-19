@@ -8,15 +8,14 @@ const Home = () => {
 
     return (
         <main>
-            {/* Full-width header with video */}
             <Header />
 
-            {/* Explore Menu Section */}
             <ExploreMenu category={category} setCategory={setCategory} />
 
-            {/* Food Display Section */}
-            <FoodDisplay category={category} searchText="" />
-        </main>
+           
+            <FoodDisplay category={category} searchText="" isHomeView={true} />
+            
+                </main>
     );
 };
 

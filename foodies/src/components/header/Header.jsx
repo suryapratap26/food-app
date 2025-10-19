@@ -4,7 +4,7 @@ import './header.css'
 const Header = () => {
     return (
         <header className="header-container position-relative overflow-hidden text-center text-white">
-            {/* Background Video */}
+           
             <video
                 autoPlay
                 loop
@@ -16,10 +16,8 @@ const Header = () => {
                 Your browser does not support the video tag.
             </video>
 
-            {/* Overlay */}
             <div className="overlay position-absolute top-0 start-0 w-100 h-100"></div>
 
-            {/* Content */}
             <div className="container position-relative z-1 d-flex flex-column justify-content-center align-items-center min-vh-100">
                 <h1 className="display-4 fw-bold mb-3 animate-fade">
                     Order Your{" "}
