@@ -7,7 +7,6 @@ import com.kspk.DTOs.*;
 import com.kspk.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,20 +34,6 @@ public class UserServiceImpl implements UserService {
         this.userDetailsService = userDetailsService;
     }
 
-    // Create default admin if none exists
-    @PostConstruct
-    public void initAdmin() {
-        if (userRepository.findByEmail("admin@kspk.com").isEmpty()) {
-            User admin = User.builder()
-                    .name("Super Admin")
-                    .email("admin@kspk.com")
-                    .password(passwordEncoder.encode("admin123"))
-                    .role("ADMIN")
-                    .build();
-            userRepository.save(admin);
-            System.out.println("✅ Default Admin created: admin@kspk.com / admin123");
-        }
-    }
 
     @Override
     public UserResponse registerUser(RegisterRequest request) {
