@@ -125,11 +125,26 @@ public class OrderServiceImpl implements OrderService {
         return list.stream().map(this::convertToResponse).collect(Collectors.toList());
     }
 
+    // Inside OrderServiceImpl.java
+
     @Override
     public OrderResponse updateOrder(String orderId, String status) {
+        // 💡 Improvement: Validate the incoming status string
+        List<String> validStatuses = List.of("PLACED", "PROCESSING", "PREPARING", "DELIVERED", "CANCELLED");
+        String upperStatus = status.toUpperCase();
+
+        if (!validStatuses.contains(upperStatus)) {
+            throw new IllegalArgumentException("Invalid order status provided: " + status);
+        }
+
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order does not exist"));
-        order.setOrderStatus(status);
+
+        if (order.getOrderStatus().equals(upperStatus)) {
+            return convertToResponse(order);
+        }
+
+        order.setOrderStatus(upperStatus);
         orderRepository.save(order);
         return convertToResponse(order);
     }

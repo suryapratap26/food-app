@@ -10,12 +10,13 @@ import rolls from "./rolls.jpg"
 import salad from "./salad.jpg"
 import video from "./video.mp4"
 import profile from "./profile.png"
-
+import upload from "./images.png"
 export const asset= {
     logo, 
     cart,
     profile,
-    video
+    video,
+    upload
 }
 
 export const categories = [

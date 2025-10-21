@@ -2,62 +2,76 @@ import React, { useContext, useEffect, useState } from "react";
 import { storeContext } from "../../context/StoreContext";
 import FoodCard from "../foodCard/FoodCard";
 import "./foodDisplay.css";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 
 const FoodDisplay = ({ category, searchText, isHomeView = false }) => {
     const { foodList } = useContext(storeContext);
     const [filteredFood, setFilteredFood] = useState([]);
-
+    const [isLoading, setIsLoading] = useState(true); 
     useEffect(() => {
-        const normalizedSearch = searchText.trim().toLowerCase();
-        let newFilteredFood = [];
+        setIsLoading(true); 
+        const timeoutId = setTimeout(() => {
+            const normalizedSearch = searchText.trim().toLowerCase();
+            let newFilteredFood = [];
 
-        const initialFiltered = foodList.filter((food) => {
-             const matchesCategory = category === "All" || food.category === category;
-            const matchesSearch =
-                food.name.toLowerCase().includes(normalizedSearch) ||
-                food.description?.toLowerCase().includes(normalizedSearch);
-            return matchesCategory && matchesSearch;
-        });
+            const initialFiltered = foodList.filter((food) => {
+                const matchesCategory = category === "All" || food.category === category;
+                const matchesSearch =
+                    food.name.toLowerCase().includes(normalizedSearch) ||
+                    food.description?.toLowerCase().includes(normalizedSearch);
+                return matchesCategory && matchesSearch;
+            });
 
-       const shouldLimitDisplay = isHomeView && category === "All";
+            const shouldLimitDisplay = isHomeView && category === "All";
 
-        if (shouldLimitDisplay) {
-            const addedCategories = new Set();
-            for (const food of initialFiltered) {
-                if (!addedCategories.has(food.category)) {
-                    newFilteredFood.push(food);
-                    addedCategories.add(food.category);
+            if (shouldLimitDisplay) {
+                const addedCategories = new Set();
+                for (const food of initialFiltered) {
+                    if (!addedCategories.has(food.category)) {
+                        newFilteredFood.push(food);
+                        addedCategories.add(food.category);
+                    }
                 }
+            } else {
+                newFilteredFood = initialFiltered;
             }
-        } else {
-            newFilteredFood = initialFiltered;
-        }
 
-        setFilteredFood(newFilteredFood);
-    }, [category, searchText, foodList, isHomeView]); 
-    
+            setFilteredFood(newFilteredFood);
+            setIsLoading(false); 
+        }, 500); 
+
+        return () => clearTimeout(timeoutId);
+    }, [category, searchText, foodList, isHomeView]);
+
+    if (isLoading) {
+        return (
+            <div className="container py-5 text-center">
+                <div className="spinner-border text-primary mb-3" role="status"></div>
+                <h5 className="text-muted">Loading food items...</h5>
+            </div>
+        );
+    }
+
     return (
         <div className="container py-4 food-display">
             <div className="text-center mb-5">
                 <h2 className="fw-bold text-primary display-6">
-                    {isHomeView && category === "All" ? "Featured Dishes" : 
-                     category === "All" ? "All Dishes" : `${category} Dishes`}
+                    {isHomeView && category === "All"
+                        ? "Featured Dishes"
+                        : category === "All"
+                        ? "All Dishes"
+                        : `${category} Dishes`}
                 </h2>
                 <p className="text-muted">
                     {filteredFood.length
-                        ? `Showing ${filteredFood.length} delicious option${
-                              filteredFood.length > 1 ? "s" : ""
-                          }`
+                        ? `Showing ${filteredFood.length} delicious option${filteredFood.length > 1 ? "s" : ""}`
                         : "No items match your search"}
                 </p>
             </div>
 
             <div className="row">
                 {filteredFood.length > 0 ? (
-                    filteredFood.map((food) => (
-                        <FoodCard key={food.id} food={food} />
-                    ))
+                    filteredFood.map((food) => <FoodCard key={food.id} food={food} />)
                 ) : (
                     <div className="col-12 text-center mt-5">
                         <img
@@ -67,9 +81,7 @@ const FoodDisplay = ({ category, searchText, isHomeView = false }) => {
                             height={120}
                             className="mb-3 opacity-75"
                         />
-                        <h4 className="fw-semibold text-secondary">
-                            No food items found.
-                        </h4>
+                        <h4 className="fw-semibold text-secondary">No food items found.</h4>
                         <p className="text-muted">
                             Try adjusting your filters or search keywords.
                         </p>

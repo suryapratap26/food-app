@@ -17,32 +17,44 @@ const Login = () => {
         setData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const onSubmitHandler = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-        try {
-            const response = await loginUser(data);
+   const onSubmitHandler = async (e) => {
+  e.preventDefault();
+  setIsLoading(true);
 
-            if (response.token) {
-                localStorage.setItem("token", response.token); 
-                
-                setToken(response.token); 
-                
-                 await loadProtectedData(); 
+  try {
+    const response = await loginUser(data);
 
-                toast.success("Login successful!");
-                navigate("/");
-            } else {
-                 toast.error("Invalid login response from server");
-            }
-        } catch (error) {
-            console.error("Login error:", error);
-            const errorMessage = error?.response?.data?.message || "Login failed. Please check your credentials and network.";
-            toast.error(errorMessage);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    if (response.token) {
+      localStorage.setItem("token", response.token);
+      localStorage.setItem("role", response.role || "CUSTOMER");
+      localStorage.setItem("username", response.username || "User");
+
+      setToken(response.token);
+      await loadProtectedData();
+
+      toast.success("Login successful!");
+
+      // ✅ Redirect based on role
+      if (response.role === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+    } else {
+      toast.error("Invalid login response from server");
+    }
+  } catch (error) {
+    console.error("Login error:", error);
+    const errorMessage =
+      error?.response?.data?.message ||
+      "Login failed. Please check your credentials and network.";
+    toast.error(errorMessage);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
 
     return (
          <div

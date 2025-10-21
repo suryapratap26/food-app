@@ -1,6 +1,4 @@
-import { apiClient } from "./apiClient";
-
-
+import { apiClient, getUserRole } from "./apiClient";
 
 const handleError = (error) => {
   const message =
@@ -43,7 +41,12 @@ export const getUserOrders = async () => {
   }
 };
 
+// ✅ Admin-only
 export const getAllOrders = async () => {
+  if (getUserRole() !== "ADMIN") {
+    throw new Error("Access denied: only admins can view all orders.");
+  }
+
   try {
     const response = await apiClient.get("/api/orders/all");
     return response.data;
@@ -53,16 +56,23 @@ export const getAllOrders = async () => {
   }
 };
 
+// ✅ Admin-only
+// ✅ Admin-only
 export const updateOrderStatus = async (orderId, status) => {
+  if (getUserRole() !== "ADMIN") {
+    throw new Error("Access denied: only admins can update orders.");
+  }
+
   try {
-    // send an object body { status } - more consistent with REST APIs
-    const response = await apiClient.put(`/api/orders/${orderId}`, { status });
+    // Send field name that backend expects
+    const response = await apiClient.put(`/api/orders/${orderId}`, { orderStatus: status });
     return response.data;
   } catch (error) {
     console.error("updateOrderStatus error:", error);
     handleError(error);
   }
 };
+
 
 export const removeOrder = async (orderId) => {
   try {
