@@ -57,7 +57,6 @@ export const getAllOrders = async () => {
 };
 
 // ✅ Admin-only
-// ✅ Admin-only
 export const updateOrderStatus = async (orderId, status) => {
   if (getUserRole() !== "ADMIN") {
     throw new Error("Access denied: only admins can update orders.");
@@ -72,7 +71,6 @@ export const updateOrderStatus = async (orderId, status) => {
     handleError(error);
   }
 };
-
 
 export const removeOrder = async (orderId) => {
   try {

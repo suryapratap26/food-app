@@ -4,12 +4,15 @@ import { checkAdminRole } from '../middleware/admin.middleware.js';
 
 const router = express.Router();
 
+// Create & verify
+router.post('/create', orderController.createOrderWithPayment);
 router.post('/verify', orderController.verifyPayment);
 
-router.post('/create', orderController.createOrderWithPayment);
+// User actions
 router.get('/', orderController.getUserOrder);
 router.delete('/:orderId', orderController.removeOrder);
 
+// Admin actions
 router.get('/all', checkAdminRole, orderController.getOrdersOfAllUsers);
 router.put('/:orderId', checkAdminRole, orderController.updateOrder);
 
