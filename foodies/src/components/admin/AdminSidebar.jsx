@@ -1,14 +1,14 @@
 import { NavLink } from "react-router-dom";
-
-// Centralized function to determine the NavLink classes based on active state
+import {asset} from "./../../assets/asset"
 const getNavLinkClass = ({ isActive }) =>
   `nav-link ${isActive ? "active fw-semibold text-primary" : "text-dark"}`;
 
 const AdminSidebar = () => {
   return (
-    // Use fixed-top, sticky-top, or custom styles if you want a fixed sidebar
     <div className="bg-light border-end vh-100 p-3 shadow-sm">
-      <h4 className="text-primary fw-bold mb-4">Admin Panel</h4>
+      <h4 className="text-primary fw-bold mb-4">
+        <img src={asset.logo} height={34} />
+      </h4>
       <ul className="nav flex-column gap-2">
         <li>
           <NavLink
