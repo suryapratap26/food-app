@@ -27,8 +27,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(authenticate);
 
+
 app.use('/api', userRoutes);
 app.use('/api/food', foodRoutes);
+
 
 app.use(requireAuth);
 app.use('/api/cart', cartRoutes);

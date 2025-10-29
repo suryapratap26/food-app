@@ -5,15 +5,18 @@ import com.kspk.Utils.JwtUtils;
 import com.kspk.entity.User;
 import com.kspk.DTOs.*;
 import com.kspk.repository.UserRepository;
+
+import lombok.AllArgsConstructor;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import jakarta.annotation.PostConstruct;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final AuthenticationUtil util;
@@ -22,17 +25,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
-
-    public UserServiceImpl(AuthenticationUtil util, JwtUtils jwtUtils,
-                           UserRepository userRepository, PasswordEncoder passwordEncoder,
-                           AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
-        this.util = util;
-        this.jwtUtils = jwtUtils;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
-        this.userDetailsService = userDetailsService;
-    }
 
 
     @Override

@@ -55,24 +55,19 @@ class UserService {
   async login(request) {
     const user = await this.loadUserByUsername(request.email);
 
-    console.log(`[DEBUG] Attempting login for: ${request.email}`);
-    console.log(`[DEBUG] Plaintext password received: ${request.password}`);
-    console.log(`[DEBUG] DB Hashed password retrieved: ${user.password}`);
-
+   
     if (!user.password || user.password.length < 10) {
       console.error(`[FATAL] Invalid password hash for user: ${request.email}`);
       throw new Error('Invalid credentials');
     }
 
     const isMatch = await bcrypt.compare(request.password, user.password);
-    console.log(`[DEBUG] Bcrypt comparison result: ${isMatch}`);
-
+    
     if (!isMatch) {
       throw new Error('Invalid credentials');
     }
 
-    // ✅ FIXED: Properly reference jwtUtils
-    const jwtToken = jwtUtils.generateToken(user);
+     const jwtToken = jwtUtils.generateToken(user);
 
     return { 
       token: jwtToken, 

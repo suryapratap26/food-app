@@ -6,7 +6,6 @@ export const loginUser = async (data) => {
 		const userData = response.data;
 
 		localStorage.setItem("token", userData.token);
-		// MODIFIED: Save the role to localStorage. Default to CUSTOMER if role is somehow missing.
 		localStorage.setItem("role", userData.role || "CUSTOMER");
 
 		setAuthToken(userData.token);
@@ -43,11 +42,21 @@ export const logoutUser = () => {
 };
 
 export const createAdmin = async (data) => {
-    try {
-        const response = await apiClient.post("/api/admin/create", data); 
-         return response.data;
-    } catch (error) {
-        console.error("createAdmin error:", error);
-        throw error;
-    }
+	try {
+		const response = await apiClient.post("/api/admin/create", data);
+		return response.data;
+	} catch (error) {
+		console.error("createAdmin error:", error);
+		throw error;
+	}
+};
+
+export const sendContactMessage = async (data) => {
+	try {
+		const response = await apiClient.post("/api/contact", data);
+		return response.data;
+	} catch (error) {
+		console.error("sendContactMessage error:", error);
+		throw error;
+	}
 };
