@@ -1,11 +1,18 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { storeContext } from "../../context/StoreContext";
+import { logoutUser } from "../../service/userService";
 
 const AdminNavbar = () => {
   const navigate = useNavigate();
+  const { setToken, setQuantities } = useContext(storeContext);
   const adminName = localStorage.getItem("username") || "Admin";
 
   const handleLogout = () => {
-    localStorage.clear();
+    logoutUser();
+    localStorage.removeItem("username");
+    setToken("");
+    setQuantities({});
     navigate("/login");
   };
 

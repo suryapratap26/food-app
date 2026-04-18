@@ -55,7 +55,7 @@ const FoodDisplay = ({ category, searchText, isHomeView = false }) => {
     return (
         <div className="container py-4 food-display">
             <div className="text-center mb-5">
-                <h2 className="fw-bold text-primary display-6">
+                <h2 className="fw-bold section-title display-6">
                     {isHomeView && category === "All"
                         ? "Featured Dishes"
                         : category === "All"

@@ -1,23 +1,64 @@
 .header-container {
     height: 100vh;
     position: relative;
+    background: #2b1606;
 }
 
 .background-video {
     object-fit: cover;
     z-index: 0;
-    filter: brightness(0.55);
+    filter: brightness(0.42) saturate(1.1);
 }
 
 .overlay {
-    background: rgba(0, 0, 0, 0.55);
+    background:
+        linear-gradient(120deg, rgba(71, 15, 15, 0.8), rgba(126, 27, 27, 0.55)),
+        linear-gradient(180deg, rgba(255, 207, 51, 0.08), rgba(0, 0, 0, 0.4));
     z-index: 1;
 }
 
 .text-gradient {
-    background: linear-gradient(90deg, #6610f2, #0d6efd);
+    background: linear-gradient(90deg, #ffd166, #ffcf33, #ff9f1c);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+.header-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.65rem 1rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.header-accent {
+    position: absolute;
+    z-index: 1;
+    border-radius: 999px;
+    filter: blur(10px);
+    opacity: 0.65;
+}
+
+.header-accent--one {
+    top: 12%;
+    left: 8%;
+    width: 240px;
+    height: 240px;
+    background: rgba(255, 209, 102, 0.26);
+}
+
+.header-accent--two {
+    right: 10%;
+    bottom: 12%;
+    width: 300px;
+    height: 300px;
+    background: rgba(214, 40, 40, 0.22);
 }
 
 .hover-scale {
@@ -26,7 +67,7 @@
 
 .hover-scale:hover {
     transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+    box-shadow: 0 14px 35px rgba(214, 40, 40, 0.35);
 }
 
 .animate-fade {

@@ -19,9 +19,12 @@ const ExploreMenu = ({ category, setCategory }) => {
 
     return (
         <div className="container my-5">
-            {/* Header */}
+            <div className="explore-menu-panel surface-card p-4 p-md-5">
             <div className="d-flex justify-content-between align-items-center mb-3">
-                <h2 className="fw-bold text-danger">Explore Our Menu</h2>
+                <div>
+                    <p className="explore-menu-kicker mb-2">Popular Categories</p>
+                    <h2 className="fw-bold section-title mb-0">Explore Our Menu</h2>
+                </div>
                 <div>
                     <i
                         className="bi bi-arrow-left-circle fs-3 text-secondary me-2 cursor-pointer hover-scale"
@@ -70,6 +73,7 @@ const ExploreMenu = ({ category, setCategory }) => {
             </div>
 
             <hr className="mt-4" />
+            </div>
         </div>
     );
 };

@@ -1,20 +1,29 @@
 .menubar {
     transition: all 0.3s ease;
     z-index: 1030;
+    background: rgba(255, 251, 240, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(214, 40, 40, 0.08);
+}
+
+.menubar-brand-text {
+    color: #a61b1b;
+    letter-spacing: 0.03em;
 }
 
 .nav-link {
-    color: #333 !important;
+    color: #56351c !important;
     transition: color 0.2s ease;
     position: relative;
 }
 
 .nav-link:hover {
-    color: #0d6efd !important;
+    color: #d62828 !important;
 }
 
 .nav-link.active {
-    color: #0d6efd !important;
+    color: #d62828 !important;
 }
 
 .nav-link.active::after {
@@ -24,7 +33,7 @@
     left: 10%;
     width: 80%;
     height: 2px;
-    background-color: #0d6efd;
+    background: linear-gradient(90deg, #d62828, #ffcf33);
     border-radius: 2px;
     animation: slideIn 0.3s ease-in-out;
 }
@@ -42,10 +51,20 @@
 
 .cart-icon {
     transition: transform 0.2s ease;
+    filter: drop-shadow(0 8px 12px rgba(214, 40, 40, 0.18));
 }
 
 .cart-icon:hover {
     transform: scale(1.1);
+}
+
+.menubar-badge {
+    background: linear-gradient(135deg, #d62828, #f77f00) !important;
+}
+
+.menubar-profile {
+    border-color: #ffcf33 !important;
+    box-shadow: 0 8px 20px rgba(255, 207, 51, 0.2);
 }
 
 .dropdown-item {
@@ -54,7 +73,7 @@
 }
 
 .dropdown-item:hover {
-    background-color: #f8f9fa;
+    background-color: #fff4d2;
 }
 
 .badge {

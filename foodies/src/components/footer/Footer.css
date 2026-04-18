@@ -1,0 +1,29 @@
+.footer-section {
+    background:
+        linear-gradient(135deg, rgba(96, 11, 11, 0.96), rgba(170, 31, 31, 0.95)),
+        linear-gradient(180deg, rgba(255, 207, 51, 0.15), rgba(255, 207, 51, 0));
+}
+
+.footer-logo {
+    border: 3px solid rgba(255, 207, 51, 0.85);
+    box-shadow: 0 12px 28px rgba(255, 207, 51, 0.15);
+}
+
+.footer-links li {
+    margin-bottom: 0.7rem;
+}
+
+.footer-links a,
+.footer-social {
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-links a:hover,
+.footer-social:hover {
+    color: #ffcf33 !important;
+    transform: translateX(2px);
+}
+
+.footer-divider {
+    border-color: rgba(255, 255, 255, 0.18);
+}

@@ -3,6 +3,10 @@
     min-height: 60vh;
 }
 
+.food-display .row {
+    row-gap: 0.5rem;
+}
+
 .food-display h2 {
     letter-spacing: 0.5px;
 }

@@ -7,8 +7,8 @@ const FoodCard = ({ food }) => {
  const { increaseQty,decreaseQty, quantities}=useContext(storeContext)
   return (
     <div className='col-12 col-sm-6 col-md-4 col-lg-3 mb-5 d-flex justify-content-center'>
-       <div   className="card" style={{ 'maxWidth': '320px',textDecoration:'none' }}>
-      <Link to={`/food/${food.id}`}> <img src={food.imageUrl} className="card-img-top" alt={food.name} />
+       <div className="card food-card border-0 w-100" style={{ maxWidth: "320px", textDecoration: "none" }}>
+      <Link to={`/food/${food.id}`}> <img src={food.imageUrl} className="card-img-top food-image" alt={food.name} />
        </Link>
         <div className="card-body">
           <h5 className="card-title">{food.name}</h5>
@@ -25,16 +25,16 @@ const FoodCard = ({ food }) => {
             </div>
           </div>
         </div>
-        <div className="card-footer d-flex justify-content-between bg-light">
-          <Link className="btn btn-primary btn-sm" to={`/food/${food.id}`}>View Food</Link>
+        <div className="card-footer d-flex justify-content-between align-items-center food-card__footer">
+          <Link className="btn btn-primary btn-sm rounded-pill px-3" to={`/food/${food.id}`}>View Food</Link>
          {
           quantities[food.id]>0?
           <div className="d-flex align-tems-center gap-2">
-            <button className='btn btn-danger btn-sm' onClick={()=>decreaseQty(food.id)}> <i className="bi bi-dash-circle"></i></button>
-            <span className='fw-bold'>{quantities[food.id]}</span>
-          <button className='btn btn-success btn-sm' onClick={()=>increaseQty(food.id)}><i className="bi bi-plus-circle"></i></button>
+            <button className='btn btn-outline-primary btn-sm rounded-circle food-card__icon-btn' onClick={()=>decreaseQty(food.id)}> <i className="bi bi-dash-circle"></i></button>
+            <span className='fw-bold food-card__qty'>{quantities[food.id]}</span>
+          <button className='btn btn-primary btn-sm rounded-circle food-card__icon-btn' onClick={()=>increaseQty(food.id)}><i className="bi bi-plus-circle"></i></button>
           </div>
-          :   <button className='btn btn-primary btn-sm' onClick={()=>increaseQty(food.id)}><i className="bi bi-plus-circle"></i></button>
+          :   <button className='btn btn-primary btn-sm rounded-circle food-card__icon-btn' onClick={()=>increaseQty(food.id)}><i className="bi bi-plus-circle"></i></button>
        
          }
         </div>

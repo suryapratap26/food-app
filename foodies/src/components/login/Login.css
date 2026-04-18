@@ -1,0 +1,212 @@
+.login-page {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    background:
+        linear-gradient(135deg, rgba(16, 24, 40, 0.78), rgba(127, 29, 29, 0.58)),
+        url("../../assets/pizza.jpg") center/cover no-repeat;
+    isolation: isolate;
+}
+
+.login-page::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    filter: blur(18px);
+    transform: scale(1.08);
+    z-index: -2;
+}
+
+.login-page::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.18), transparent 32%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0));
+    z-index: -1;
+}
+
+.login-page__glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(10px);
+    opacity: 0.65;
+    pointer-events: none;
+}
+
+.login-page__glow--one {
+    top: 8%;
+    left: 8%;
+    width: 240px;
+    height: 240px;
+    background: rgba(255, 159, 67, 0.45);
+}
+
+.login-page__glow--two {
+    right: 10%;
+    bottom: 8%;
+    width: 280px;
+    height: 280px;
+    background: rgba(255, 99, 71, 0.35);
+}
+
+.login-shell {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 2rem;
+    align-items: center;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 32px;
+    background: rgba(15, 23, 42, 0.18);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 28px 80px rgba(15, 23, 42, 0.28);
+}
+
+.login-shell__content {
+    color: #fff7ed;
+    padding: 1rem;
+}
+
+.login-shell__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.45rem 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.login-shell__title {
+    margin-top: 1.25rem;
+    font-size: clamp(2.2rem, 4vw, 4rem);
+    font-weight: 800;
+    line-height: 1.05;
+}
+
+.login-shell__text {
+    max-width: 32rem;
+    margin-top: 1rem;
+    font-size: 1.02rem;
+    line-height: 1.75;
+    color: rgba(255, 247, 237, 0.84);
+}
+
+.login-shell__highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    margin-top: 1.75rem;
+}
+
+.login-shell__highlight {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff7ed;
+    font-weight: 600;
+}
+
+.login-shell__highlight i {
+    color: #ffd166;
+}
+
+.login-card {
+    padding: 2rem;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.login-card__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 78px;
+    height: 78px;
+    margin: 0 auto;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #f97316, #ef4444);
+    color: white;
+    font-size: 2rem;
+    box-shadow: 0 18px 40px rgba(239, 68, 68, 0.25);
+}
+
+.login-card__input {
+    min-height: 58px;
+    border-color: rgba(148, 163, 184, 0.32);
+    background: rgba(255, 255, 255, 0.82);
+}
+
+.login-card__input:focus {
+    border-color: rgba(249, 115, 22, 0.8);
+    box-shadow: 0 0 0 0.25rem rgba(249, 115, 22, 0.15);
+}
+
+.login-card__button {
+    color: #fff;
+    border: none;
+    background: linear-gradient(135deg, #f97316, #ef4444);
+    box-shadow: 0 18px 36px rgba(239, 68, 68, 0.24);
+}
+
+.login-card__button:hover,
+.login-card__button:focus {
+    color: #fff;
+    background: linear-gradient(135deg, #ea580c, #dc2626);
+}
+
+.login-card__link {
+    color: #ea580c;
+}
+
+.login-card__link:hover {
+    color: #c2410c;
+}
+
+@media (max-width: 991.98px) {
+    .login-shell {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+
+    .login-shell__content {
+        padding: 1rem 0.5rem 0;
+        text-align: center;
+    }
+
+    .login-shell__text {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .login-shell__highlights {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .login-page {
+        padding: 1rem 0;
+    }
+
+    .login-card {
+        padding: 1.5rem;
+    }
+
+    .login-shell {
+        border-radius: 24px;
+    }
+}

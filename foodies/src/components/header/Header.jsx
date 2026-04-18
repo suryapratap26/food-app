@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { asset } from "../../assets/asset.js";
-import './header.css'
+import "./header.css";
+
 const Header = () => {
     return (
         <header className="header-container position-relative overflow-hidden text-center text-white">
-           
             <video
                 autoPlay
                 loop
@@ -17,18 +17,22 @@ const Header = () => {
             </video>
 
             <div className="overlay position-absolute top-0 start-0 w-100 h-100"></div>
+            <div className="header-accent header-accent--one"></div>
+            <div className="header-accent header-accent--two"></div>
 
             <div className="container position-relative z-1 d-flex flex-column justify-content-center align-items-center min-vh-100">
+                <span className="header-chip animate-fade">Fresh. Hot. Fast.</span>
                 <h1 className="display-4 fw-bold mb-3 animate-fade">
                     Order Your{" "}
                     <span className="text-gradient fw-bolder">Favorite Food</span> Here
                 </h1>
                 <p className="lead mb-4 animate-fade-delay">
-                    Discover the best food and drinks — fast, fresh, and delicious.
+                    Discover the best food and drinks for every craving, served
+                    with a bold red-and-yellow flavor story.
                 </p>
                 <Link
                     to="/explore"
-                    className="btn btn-lg btn-primary px-5 py-2 rounded-pill shadow hover-scale"
+                    className="btn btn-lg btn-primary px-5 py-3 rounded-pill shadow hover-scale"
                 >
                     <i className="bi bi-arrow-right-circle me-2"></i> Explore Menu
                 </Link>

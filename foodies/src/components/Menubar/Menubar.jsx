@@ -21,7 +21,7 @@ const Menubar = () => {
     };
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top py-2 menubar">
+        <nav className="navbar navbar-expand-lg navbar-light sticky-top py-2 menubar">
             <div className="container">
             
                 <Link to="/" className="navbar-brand d-flex align-items-center gap-2">
@@ -32,7 +32,7 @@ const Menubar = () => {
                         alt="App logo"
                         className="rounded-circle"
                     />
-                    <span className="fw-bold text-primary fs-5">KSPK Foods</span>
+                    <span className="fw-bold menubar-brand-text fs-5">KSPK Foods</span>
                 </Link>
 
                 <button
@@ -100,7 +100,7 @@ const Menubar = () => {
                                 className="cart-icon"
                             />
                             {uniqueItemsInCart > 0 && (
-                                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill menubar-badge">
                   {uniqueItemsInCart}
                 </span>
                             )}
@@ -110,13 +110,13 @@ const Menubar = () => {
                         {!token ? (
                             <>
                                 <button
-                                    className="btn btn-outline-primary rounded-3 px-3"
+                                    className="btn btn-outline-primary rounded-pill px-3"
                                     onClick={() => navigate("/login")}
                                 >
                                     Login
                                 </button>
                                 <button
-                                    className="btn btn-primary rounded-3 px-3"
+                                    className="btn btn-primary rounded-pill px-3"
                                     onClick={() => navigate("/register")}
                                 >
                                     Register
@@ -135,7 +135,7 @@ const Menubar = () => {
                                         alt="profile"
                                         height={36}
                                         width={36}
-                                        className="rounded-circle border border-2 border-primary"
+                                        className="rounded-circle border border-2 menubar-profile"
                                     />
                                 </a>
                                 <ul className="dropdown-menu dropdown-menu-end text-small shadow">

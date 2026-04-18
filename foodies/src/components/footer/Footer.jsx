@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { asset } from "../../assets/asset";
+import "./Footer.css";
 
 const Footer = () => {
   return (
-    <footer className="bg-dark text-white pt-5 pb-3 ">
+    <footer className="footer-section text-white pt-5 pb-3">
       <div className="container">
         <div className="row">
           <div className="col-md-4 mb-4">
@@ -12,7 +13,7 @@ const Footer = () => {
               alt="Logo"
               width={60}
               height={60}
-              className="mb-3"
+              className="mb-3 rounded-circle footer-logo"
             />
             <p>
               Delicious food delivered fast to your doorstep. Enjoy fresh meals
@@ -22,7 +23,7 @@ const Footer = () => {
 
           <div className="col-md-4 mb-4">
             <h5 className="mb-3">Quick Links</h5>
-            <ul className="list-unstyled">
+            <ul className="list-unstyled footer-links">
               <li>
                 <Link to="/" className="text-white text-decoration-none">
                   Home
@@ -61,7 +62,7 @@ const Footer = () => {
                 href="https://www.linkedin.com/in/surya-pratap-singh-chundawat-7945422bb"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white fs-5 text-decoration-none"
+                className="text-white fs-5 text-decoration-none footer-social"
               >
                 <i className="bi bi-linkedin"></i> Linkedin </a>
            
@@ -69,7 +70,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <hr className="bg-secondary" />
+        <hr className="footer-divider" />
 
         <div className="text-center">
           <p className="mb-0">

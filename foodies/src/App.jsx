@@ -3,6 +3,7 @@ import Menubar from "./components/Menubar/Menubar";
 import Footer from "./components/footer/Footer";
 import { ToastContainer } from "react-toastify";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute/PublicRoute";
 import Home from "./pages/Home/Home";
 import ExploreFood from "./pages/explore food/ExploreFood";
 import ContactUs from "./pages/contact/Contact";
@@ -33,8 +34,8 @@ const App = () => {
         <Route path="/explore" element={<ExploreFood />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/food/:id" element={<FoodDetails />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<PublicRoute element={Login} />} />
+        <Route path="/register" element={<PublicRoute element={Register} />} />
 
         <Route path="/cart" element={<ProtectedRoute element={Cart} />} />
         <Route path="/order" element={<ProtectedRoute element={PlaceOrder} />} />
