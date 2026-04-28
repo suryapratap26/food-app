@@ -270,6 +270,3 @@ Restaurant accounts must be approved by an admin before they can access the rest
 - Add image optimization and lazy loading
 - Add analytics and reporting for admin and restaurant dashboards
 
-## License
-
-This project currently does not define a license in the repository. Add one if you plan to distribute it publicly.
