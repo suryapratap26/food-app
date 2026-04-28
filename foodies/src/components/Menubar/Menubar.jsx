@@ -1,30 +1,51 @@
 import "./menubar.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { asset } from "./../../assets/asset";
-import { useContext, useState } from "react";
+import { useContext, useRef } from "react";
 import { storeContext } from "../../context/StoreContext";
+import { logoutUser } from "../../service/userService";
 
 const Menubar = () => {
     const navigate = useNavigate();
-    const [active, setActive] = useState("home");
-    const { quantities, setQuantities, token, setToken } =
+    const location = useLocation();
+    const menuRef = useRef(null);
+    const { quantities, setQuantities, token, setToken, userProfile } =
         useContext(storeContext);
+    const role = localStorage.getItem("role");
+    const isManager = role === "ADMIN" || role === "RESTAURANT";
     const uniqueItemsInCart = Object.values(quantities).filter(
         (qty) => qty > 0
     ).length;
 
+    const isActive = (path) => location.pathname === path;
+
+    const closeNavbarMenu = () => {
+        if (window.innerWidth >= 992 || !menuRef.current) {
+            return;
+        }
+
+        const collapseInstance = window.bootstrap?.Collapse.getOrCreateInstance(
+            menuRef.current
+        );
+        collapseInstance?.hide();
+    };
+
     const logout = () => {
-        localStorage.removeItem("token");
+        logoutUser();
         setToken("");
         setQuantities({});
+        closeNavbarMenu();
         navigate("/");
     };
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light sticky-top py-2 menubar">
             <div className="container">
-            
-                <Link to="/" className="navbar-brand d-flex align-items-center gap-2">
+                <Link
+                    to="/"
+                    className="navbar-brand d-flex align-items-center gap-2"
+                    onClick={closeNavbarMenu}
+                >
                     <img
                         src={asset.logo}
                         height={42}
@@ -47,15 +68,15 @@ const Menubar = () => {
                     <span className="navbar-toggler-icon"></span>
                 </button>
 
-                <div className="collapse navbar-collapse" id="navbarMenu">
+                <div className="collapse navbar-collapse" id="navbarMenu" ref={menuRef}>
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li className="nav-item">
                             <Link
                                 className={
-                                    active === "home" ? "nav-link active fw-semibold" : "nav-link"
+                                    isActive("/") ? "nav-link active fw-semibold" : "nav-link"
                                 }
                                 to="/"
-                                onClick={() => setActive("home")}
+                                onClick={closeNavbarMenu}
                             >
                                 Home
                             </Link>
@@ -63,12 +84,12 @@ const Menubar = () => {
                         <li className="nav-item">
                             <Link
                                 className={
-                                    active === "explore"
+                                    isActive("/explore")
                                         ? "nav-link active fw-semibold"
                                         : "nav-link"
                                 }
                                 to="/explore"
-                                onClick={() => setActive("explore")}
+                                onClick={closeNavbarMenu}
                             >
                                 Explore
                             </Link>
@@ -76,48 +97,57 @@ const Menubar = () => {
                         <li className="nav-item">
                             <Link
                                 className={
-                                    active === "contact"
+                                    isActive("/contact")
                                         ? "nav-link active fw-semibold"
                                         : "nav-link"
                                 }
                                 to="/contact"
-                                onClick={() => setActive("contact")}
+                                onClick={closeNavbarMenu}
                             >
                                 Contact
                             </Link>
                         </li>
                     </ul>
 
-                   
                     <div className="d-flex align-items-center gap-3">
-                       
-                        <Link to="/cart" className="position-relative">
-                            <img
-                                src={asset.cart}
-                                height={36}
-                                width={36}
-                                alt="Cart icon"
-                                className="cart-icon"
-                            />
-                            {uniqueItemsInCart > 0 && (
-                                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill menubar-badge">
-                  {uniqueItemsInCart}
-                </span>
-                            )}
-                        </Link>
+                        {!isManager && (
+                            <Link
+                                to="/cart"
+                                className="position-relative"
+                                onClick={closeNavbarMenu}
+                            >
+                                <img
+                                    src={asset.cart}
+                                    height={36}
+                                    width={36}
+                                    alt="Cart icon"
+                                    className="cart-icon"
+                                />
+                                {uniqueItemsInCart > 0 && (
+                                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill menubar-badge">
+                                        {uniqueItemsInCart}
+                                    </span>
+                                )}
+                            </Link>
+                        )}
 
-                       
                         {!token ? (
                             <>
                                 <button
                                     className="btn btn-outline-primary rounded-pill px-3"
-                                    onClick={() => navigate("/login")}
+                                    onClick={() => {
+                                        closeNavbarMenu();
+                                        navigate("/login");
+                                    }}
                                 >
                                     Login
                                 </button>
                                 <button
                                     className="btn btn-primary rounded-pill px-3"
-                                    onClick={() => navigate("/register")}
+                                    onClick={() => {
+                                        closeNavbarMenu();
+                                        navigate("/register");
+                                    }}
                                 >
                                     Register
                                 </button>
@@ -126,7 +156,7 @@ const Menubar = () => {
                             <div className="dropdown text-end">
                                 <a
                                     href="#"
-                                    className="d-block link-dark text-decoration-none dropdown-toggle"
+                                    className="d-block menubar-profile-toggle text-decoration-none dropdown-toggle"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
                                 >
@@ -142,11 +172,34 @@ const Menubar = () => {
                                     <li>
                                         <button
                                             className="dropdown-item"
-                                            onClick={() => navigate("/myorders")}
+                                            onClick={() => {
+                                                closeNavbarMenu();
+                                                navigate(isManager ? "/admin" : "/myorders");
+                                            }}
                                         >
-                                            <i className="bi bi-bag-check me-2"></i> Orders
+                                            <i className="bi bi-bag-check me-2"></i>
+                                            {isManager ? "Dashboard" : "Orders"}
                                         </button>
                                     </li>
+                                    {!isManager && (
+                                        <li>
+                                            <button
+                                                className="dropdown-item"
+                                                onClick={() => {
+                                                    closeNavbarMenu();
+                                                    navigate("/profile");
+                                                }}
+                                            >
+                                                <i className="bi bi-person-gear me-2"></i>
+                                                Profile
+                                            </button>
+                                        </li>
+                                    )}
+                                    {!isManager && userProfile?.savedAddress?.city && (
+                                        <li className="dropdown-item-text small text-muted">
+                                            Delivering near {userProfile.savedAddress.city}
+                                        </li>
+                                    )}
                                     <li>
                                         <hr className="dropdown-divider" />
                                     </li>

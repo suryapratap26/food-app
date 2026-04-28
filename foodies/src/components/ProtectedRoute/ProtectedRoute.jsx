@@ -10,10 +10,16 @@ const ProtectedRoute = ({ element: Component, requiredRole }) => {
   }
 
   // 2. ✅ Route requires specific role (e.g., ADMIN) but user doesn't have it → redirect to home
-  if (requiredRole && role !== requiredRole) {
+  const allowedRoles = Array.isArray(requiredRole)
+    ? requiredRole
+    : requiredRole
+    ? [requiredRole]
+    : [];
+
+  if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
     return <Navigate to="/" replace />;
   }
-  if (!requiredRole && role === "ADMIN") {
+  if (!requiredRole && (role === "ADMIN" || role === "RESTAURANT")) {
     return <Navigate to="/admin" replace />;
   }
 

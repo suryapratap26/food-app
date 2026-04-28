@@ -13,11 +13,14 @@ import PlaceOrder from "./pages/place-order/PlaceOrder";
 import Login from "./components/login/Login";
 import Register from "./components/register/Register";
 import MyOrder from "./pages/MyOrder/MyOrder";
+import CompleteAddress from "./pages/complete-address/CompleteAddress";
+import Profile from "./pages/profile/Profile";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ManageFood from "./pages/admin/ManageFood";
 import AllOrders from "./pages/admin/AllOrders";
 import AddFood from "./pages/admin/AddFood";
 import CreateAdmin from "./pages/admin/CreateAdmin";
+import PendingRestaurants from "./pages/admin/PendingRestaurants";
 
 const App = () => {
   const location = useLocation();
@@ -40,12 +43,15 @@ const App = () => {
         <Route path="/cart" element={<ProtectedRoute element={Cart} />} />
         <Route path="/order" element={<ProtectedRoute element={PlaceOrder} />} />
         <Route path="/myorders" element={<ProtectedRoute element={MyOrder} />} />
+        <Route path="/profile" element={<ProtectedRoute element={Profile} requiredRole="CUSTOMER" />} />
+        <Route path="/complete-address" element={<ProtectedRoute element={CompleteAddress} requiredRole="CUSTOMER" />} />
 
-        <Route path="/admin" element={<ProtectedRoute element={AdminDashboard} requiredRole="ADMIN" />} />
+        <Route path="/admin" element={<ProtectedRoute element={AdminDashboard} requiredRole={["ADMIN", "RESTAURANT"]} />} />
          <Route path="/admin/createAdmin" element={<ProtectedRoute element={CreateAdmin} requiredRole="ADMIN" />} />
-       <Route path="/admin/manage-food" element={<ProtectedRoute element={ManageFood} requiredRole="ADMIN" />} />
-        <Route path="/admin/orders" element={<ProtectedRoute element={AllOrders} requiredRole="ADMIN" />} />
-        <Route path="/admin/addfood" element={<ProtectedRoute element={AddFood} requiredRole="ADMIN" />} />
+        <Route path="/admin/pending-restaurants" element={<ProtectedRoute element={PendingRestaurants} requiredRole="ADMIN" />} />
+       <Route path="/admin/manage-food" element={<ProtectedRoute element={ManageFood} requiredRole={["ADMIN", "RESTAURANT"]} />} />
+        <Route path="/admin/orders" element={<ProtectedRoute element={AllOrders} requiredRole={["ADMIN", "RESTAURANT"]} />} />
+        <Route path="/admin/addfood" element={<ProtectedRoute element={AddFood} requiredRole={["ADMIN", "RESTAURANT"]} />} />
       </Routes>
       
       {/* Show Footer only if the current path is NOT an admin route */}

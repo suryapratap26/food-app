@@ -1,8 +1,8 @@
-import { apiClient, getUserRole } from "./apiClient";
+import { apiClient, isManagerRole } from "./apiClient";
 
-export const fetchFoodList = async () => {
+export const fetchFoodList = async (params = {}) => {
   try {
-    const response = await apiClient.get("/api/food");
+    const response = await apiClient.get("/api/food", { params });
     return response.data;
   } catch (error) {
     console.error("fetchFoodList error:", error);
@@ -20,10 +20,20 @@ export const fetchFoodDetail = async (id) => {
   }
 };
 
+export const submitFoodReview = async (id, reviewData) => {
+  try {
+    const response = await apiClient.post(`/api/food/${id}/reviews`, reviewData);
+    return response.data;
+  } catch (error) {
+    console.error("submitFoodReview error:", error);
+    throw error;
+  }
+};
+
 // ✅ Admin-only
 export const addFood = async (foodData, file) => {
-  if (getUserRole() !== "ADMIN") {
-    throw new Error("Access denied: only admins can add food.");
+  if (!isManagerRole()) {
+    throw new Error("Access denied: only restaurant or admin accounts can add food.");
   }
 
   try {
@@ -43,8 +53,8 @@ export const addFood = async (foodData, file) => {
 
 // ✅ Admin-only
 export const deleteFood = async (id) => {
-  if (getUserRole() !== "ADMIN") {
-    throw new Error("Access denied: only admins can delete food.");
+  if (!isManagerRole()) {
+    throw new Error("Access denied: only restaurant or admin accounts can delete food.");
   }
 
   try {

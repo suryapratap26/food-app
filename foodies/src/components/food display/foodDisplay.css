@@ -3,6 +3,11 @@
     min-height: 60vh;
 }
 
+.food-display .text-muted {
+    color: rgba(245, 233, 168, 0.76) !important;
+    font-size: 0.95rem;
+}
+
 .food-display .row {
     row-gap: 0.5rem;
 }
@@ -15,8 +20,11 @@
     user-select: none;
 }
 
-.food-display .text-muted {
-    font-size: 0.95rem;
+.food-display__empty-logo {
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 209, 0, 0.2);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
 }
 
 @media (max-width: 576px) {

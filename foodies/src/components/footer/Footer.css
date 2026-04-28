@@ -1,12 +1,12 @@
 .footer-section {
     background:
-        linear-gradient(135deg, rgba(96, 11, 11, 0.96), rgba(170, 31, 31, 0.95)),
-        linear-gradient(180deg, rgba(255, 207, 51, 0.15), rgba(255, 207, 51, 0));
+        linear-gradient(135deg, rgba(0, 0, 0, 0.98), rgba(110, 0, 0, 0.94)),
+        linear-gradient(180deg, rgba(255, 209, 0, 0.1), rgba(255, 209, 0, 0));
 }
 
 .footer-logo {
-    border: 3px solid rgba(255, 207, 51, 0.85);
-    box-shadow: 0 12px 28px rgba(255, 207, 51, 0.15);
+    border: 3px solid rgba(255, 209, 0, 0.85);
+    box-shadow: 0 12px 28px rgba(255, 209, 0, 0.15);
 }
 
 .footer-links li {
@@ -20,7 +20,7 @@
 
 .footer-links a:hover,
 .footer-social:hover {
-    color: #ffcf33 !important;
+    color: #ffd100 !important;
     transform: translateX(2px);
 }
 

@@ -12,17 +12,25 @@ const CARD_ELEMENT_OPTIONS = {
   hidePostalCode: false,
 };
 
-const PaymentSection = ({ billingData, orderData, token, cartItems, clearCart, navigate }) => {
+const PaymentSection = ({
+  billingData,
+  orderData,
+  cartItems,
+  clearCart,
+  navigate,
+  stripeError,
+}) => {
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("COD");
 
   const validateBilling = () => {
     if (!billingData) return "Missing billing information.";
     if (!billingData.firstName || !billingData.lastName) return "Full name required.";
     if (!billingData.email) return "Email required.";
     if (!billingData.address) return "Address required.";
- 
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(billingData.email)) return "Invalid email address.";
     return null;
@@ -33,12 +41,6 @@ const PaymentSection = ({ billingData, orderData, token, cartItems, clearCart, n
     if (isProcessing) return;
 
     setIsProcessing(true);
-
-    if (!stripe || !elements) {
-      toast.error("Stripe not initialized.");
-      setIsProcessing(false);
-      return;
-    }
 
     if (!cartItems || cartItems.length === 0) {
       toast.error("Your cart is empty. Please add items.");
@@ -53,14 +55,34 @@ const PaymentSection = ({ billingData, orderData, token, cartItems, clearCart, n
       return;
     }
 
-    try {
-      toast.info("Creating order and securing payment intent...");
+    const payload = {
+      ...orderData,
+      paymentMethod,
+    };
 
-      const responseData = await orderService.createOrder(orderData);
+    try {
+      if (paymentMethod === "COD") {
+        const responseData = await orderService.createOrder(payload);
+
+        if (typeof clearCart === "function") {
+          await clearCart();
+        }
+
+        toast.success("Order placed with Cash on Delivery.");
+        if (typeof navigate === "function") navigate("/myorders");
+        return responseData;
+      }
+
+      if (!stripe || !elements) {
+        toast.error(stripeError || "Card payments are not ready yet.");
+        return;
+      }
+
+      toast.info("Creating order and securing payment intent...");
+      const responseData = await orderService.createOrder(payload);
 
       if (!responseData?.stripeClientSecret) {
         toast.error("Order created but missing payment secret. Please contact support.");
-        setIsProcessing(false);
         return;
       }
 
@@ -68,7 +90,8 @@ const PaymentSection = ({ billingData, orderData, token, cartItems, clearCart, n
       await initiateStripePayment(responseData, elements, stripe, billingData, clearCart, navigate);
     } catch (error) {
       console.error("PaymentSection handleSubmit error:", error);
-      const message = error?.message || "Order creation failed. Please try again.";
+      const message =
+        error?.response?.data?.message || error?.message || "Order creation failed. Please try again.";
       toast.error(message);
     } finally {
       setIsProcessing(false);
@@ -77,20 +100,58 @@ const PaymentSection = ({ billingData, orderData, token, cartItems, clearCart, n
 
   return (
     <form onSubmit={handleSubmit}>
-      <h4 className="mb-3 mt-4">Payment Method</h4>
+      <h4 className="checkout-card__title mb-2 mt-4">Payment Method</h4>
+      <p className="checkout-card__subtitle mb-3">
+        Choose cash on delivery or pay with card.
+      </p>
 
-      <div className="border p-3 mb-4 rounded-3">
-        <CardElement id="card" options={CARD_ELEMENT_OPTIONS} />
+      <div className="checkout-payment-options mb-4">
+        <label className={`checkout-payment-option ${paymentMethod === "COD" ? "is-active" : ""}`}>
+          <input
+            type="radio"
+            name="paymentMethod"
+            value="COD"
+            checked={paymentMethod === "COD"}
+            onChange={(event) => setPaymentMethod(event.target.value)}
+          />
+          <span>
+            <strong>Cash on Delivery</strong>
+            <small className="d-block text-muted">Pay when your order arrives.</small>
+          </span>
+        </label>
+
+        <label className={`checkout-payment-option ${paymentMethod === "CARD" ? "is-active" : ""}`}>
+          <input
+            type="radio"
+            name="paymentMethod"
+            value="CARD"
+            checked={paymentMethod === "CARD"}
+            onChange={(event) => setPaymentMethod(event.target.value)}
+          />
+          <span>
+            <strong>Card Payment</strong>
+            <small className="d-block text-muted">Pay securely with Stripe.</small>
+          </span>
+        </label>
       </div>
+
+      {paymentMethod === "CARD" && (
+        <>
+          {stripeError && <p className="text-danger small mb-3">{stripeError}</p>}
+          <div className="checkout-payment-card p-3 mb-4">
+            <CardElement id="card" options={CARD_ELEMENT_OPTIONS} />
+          </div>
+        </>
+      )}
 
       <hr className="my-4" />
 
-      <button
-        className="w-100 btn btn-primary btn-lg"
-        type="submit"
-        disabled={!stripe || !elements || isProcessing || !cartItems || cartItems.length === 0}
-      >
-        {isProcessing ? "Processing..." : `Place Order and Pay ₹${Number(orderData.amount).toFixed(2)}`}
+      <button className="w-100 btn btn-primary btn-lg rounded-pill" type="submit" disabled={isProcessing}>
+        {isProcessing
+          ? "Processing..."
+          : paymentMethod === "CARD"
+          ? `Place Order and Pay Rs ${Number(orderData.amount).toFixed(2)}`
+          : `Place COD Order Rs ${Number(orderData.amount).toFixed(2)}`}
       </button>
     </form>
   );

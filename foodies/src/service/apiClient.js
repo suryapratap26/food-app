@@ -16,6 +16,7 @@ export const setAuthToken = (token) => {
 };
 
 export const getUserRole = () => localStorage.getItem("role") || "CUSTOMER";
+export const isManagerRole = () => ["ADMIN", "RESTAURANT"].includes(getUserRole());
 
 const token = localStorage.getItem("token");
 if (token) setAuthToken(token);

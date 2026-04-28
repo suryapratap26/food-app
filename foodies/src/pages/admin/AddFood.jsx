@@ -12,6 +12,7 @@ const initialDataState = {
 };
 
 const AddFood = () => {
+    const role = localStorage.getItem("role");
     // image state will hold the File object
     const [image, setImage] = useState(false); 
     const [data, setData] = useState(initialDataState);
@@ -57,7 +58,9 @@ const AddFood = () => {
             <div className="row justify-content-center">
                 <div className="col-md-8 col-lg-6 card shadow-sm p-4">
                     <form onSubmit={onSubmitHandler}>
-                        <h2 className="text-center mb-4">Add Food</h2>
+                        <h2 className="text-center mb-4">
+                            {role === "RESTAURANT" ? "Add Food For Your Restaurant" : "Add Food"}
+                        </h2>
                         
                         {/* Image Upload Section */}
                         <div className="mb-3">

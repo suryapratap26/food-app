@@ -28,6 +28,7 @@ const getStatusBadge = (status) => {
 };
 
 const AllOrders = () => {
+  const role = localStorage.getItem("role");
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -80,7 +81,12 @@ const AllOrders = () => {
   return (
     <AdminLayout>
       <div className="container-fluid">
-        <h2 className="fw-bold text-primary mb-4">All Orders</h2>
+        <h2 className="fw-bold text-primary mb-4">
+          {role === "RESTAURANT" ? "Restaurant Orders" : "All Orders"}
+        </h2>
+        {role === "RESTAURANT" && (
+          <p className="text-muted">These are customer orders placed for your restaurant.</p>
+        )}
 
         {/* --- Conditional Rendering (Loading/Empty/Data) --- */}
         {loading ? (
@@ -111,7 +117,12 @@ const AllOrders = () => {
                   <tr key={order.id}>
                     {/* Display first 8 characters of ID */}
                     <td>{order.id.substring(0, 8)}...</td>
-                    <td>{order.email || order.userEmail || "N/A"}</td> 
+                    <td>
+                      <div>{order.email || order.userEmail || "N/A"}</div>
+                      {order.restaurantName && role === "ADMIN" && (
+                        <small className="text-muted">{order.restaurantName}</small>
+                      )}
+                    </td> 
                     <td>₹{order.amount.toFixed(2)}</td>
                     
                     {/* Status Dropdown with current value */}

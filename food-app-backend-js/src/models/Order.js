@@ -16,11 +16,24 @@ const orderItemSchema = new mongoose.Schema(
 const orderSchema = new mongoose.Schema(
   {
     userId: { type: String, required: true },
+    restaurantId: { type: String, required: true, index: true },
+    restaurantName: { type: String, required: true },
     userAddress: { type: String, required: true },
+    customerAddress: {
+      firstName: { type: String },
+      lastName: { type: String },
+      phone: { type: String },
+      line1: { type: String },
+      city: { type: String },
+      state: { type: String },
+      country: { type: String },
+      zipcode: { type: String }
+    },
     phoneNumber: { type: String, required: true },
     email: { type: String, required: true },
     orderItemsList: [orderItemSchema],
     amount: { type: Number, required: true },
+    paymentMethod: { type: String, default: 'CARD' },
     paymentStatus: { type: String, default: 'INITIATED' },
     orderStatus: { type: String, default: 'INITIATED' },
     stripePaymentIntentId: { type: String, index: true, sparse: true },
@@ -31,6 +44,9 @@ const orderSchema = new mongoose.Schema(
 
 orderSchema.statics.findByUserId = function (userId) {
   return this.find({ userId }).sort({ createdAt: -1 });
+};
+orderSchema.statics.findByRestaurantId = function (restaurantId) {
+  return this.find({ restaurantId }).sort({ createdAt: -1 });
 };
 orderSchema.statics.findByStripePaymentIntentId = function (paymentIntentId) {
   return this.findOne({ stripePaymentIntentId: paymentIntentId });

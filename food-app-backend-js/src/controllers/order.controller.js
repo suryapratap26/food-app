@@ -3,7 +3,7 @@ import orderService from '../services/order.service.js';
 class OrderController {
   async createOrderWithPayment(req, res) {
     try {
-      const response = await orderService.createOrderWithPayment(req.body, req.userId);
+      const response = await orderService.createOrderWithPayment(req.body, req.user);
       return res.status(201).json(response);
     } catch (error) {
       console.error('Create Order Error:', error);
@@ -41,7 +41,7 @@ class OrderController {
 
   async removeOrder(req, res) {
     try {
-      await orderService.removeOrder(req.params.orderId);
+      await orderService.removeOrder(req.params.orderId, req.user);
       return res.status(204).end();
     } catch (error) {
       console.error('Remove Order Error:', error);
@@ -51,7 +51,7 @@ class OrderController {
 
   async getOrdersOfAllUsers(req, res) {
     try {
-      const response = await orderService.getOrdersOfAllUsers();
+      const response = await orderService.getOrdersOfAllUsers(req.user);
       return res.status(200).json(response);
     } catch (error) {
       console.error('Get All Orders Error:', error);
@@ -64,7 +64,7 @@ class OrderController {
     if (!status) return res.status(400).json({ message: 'Order status is required.' });
 
     try {
-      const response = await orderService.updateOrder(req.params.orderId, status);
+      const response = await orderService.updateOrder(req.params.orderId, status, req.user);
       return res.status(200).json(response);
     } catch (error) {
       console.error('Update Order Error:', error);

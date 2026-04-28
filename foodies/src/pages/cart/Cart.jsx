@@ -99,9 +99,9 @@ const Cart = () => {
           </div>
         </div>
 
-        <div className="col-lg-4">
+        <div className="col-lg-4 ">
           <div className="card cart-summary shadow-sm">
-            <div className="card-body">
+            <div className="card-body bg-white">
               <h5 className="card-title mb-4">Order Summary</h5>
               <div className="d-flex justify-content-between mb-3">
                 <span>Subtotal</span>

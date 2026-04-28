@@ -4,12 +4,18 @@ import { fetchFoodList, deleteFood } from "../../service/foodService";
 import { toast } from "react-toastify";
 
 const ManageFood = () => {
+  const role = localStorage.getItem("role");
+  const profile = JSON.parse(localStorage.getItem("profile") || "null");
   const [foods, setFoods] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const loadFoods = async () => {
     try {
-      const data = await fetchFoodList();
+      const params =
+        role === "RESTAURANT" && profile?.id
+          ? { managerRestaurantId: profile.id }
+          : {};
+      const data = await fetchFoodList(params);
       setFoods(data);
     } catch (err) {
       toast.error("Failed to fetch food items");
@@ -38,6 +44,9 @@ const ManageFood = () => {
     <AdminLayout>
       <div className="container-fluid">
         <h2 className="fw-bold text-primary mb-4">Manage Food Items</h2>
+        {role === "RESTAURANT" && (
+          <p className="text-muted">These menu items belong to your restaurant account.</p>
+        )}
 
         {loading ? (
           <div className="text-center py-5">

@@ -27,14 +27,14 @@ const Login = () => {
             if (response.token) {
                 localStorage.setItem("token", response.token);
                 localStorage.setItem("role", response.role || "CUSTOMER");
-                localStorage.setItem("username", response.username || "User");
+                localStorage.setItem("username", response.name || "User");
 
                 setToken(response.token);
                 await loadProtectedData();
 
                 toast.success("Login successful!");
 
-                if (response.role === "ADMIN") {
+                if (response.role === "ADMIN" || response.role === "RESTAURANT") {
                     navigate("/admin");
                 } else {
                     navigate("/");
@@ -70,9 +70,8 @@ const Login = () => {
                                 <span className="login-shell__eyebrow">Foodies</span>
                                 <h1 className="login-shell__title">Welcome back</h1>
                                 <p className="login-shell__text">
-                                    Sign in to track your favorite meals, manage
-                                    your cart, and keep every craving one tap
-                                    away.
+                                    Sign in to order from nearby restaurants or
+                                    manage your restaurant menu and incoming orders.
                                 </p>
 
                                 <div className="login-shell__highlights">
@@ -82,7 +81,7 @@ const Login = () => {
                                     </div>
                                     <div className="login-shell__highlight">
                                         <i className="bi bi-bag-check-fill"></i>
-                                        <span>Live order updates</span>
+                                        <span>Restaurant orders</span>
                                     </div>
                                     <div className="login-shell__highlight">
                                         <i className="bi bi-heart-fill"></i>

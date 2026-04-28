@@ -1,12 +1,37 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import ContactMessage from "../models/ContactMessage.js";
 
 dotenv.config();
 
 class ContactService {
+  hasEmailConfig() {
+    return Boolean(
+      process.env.EMAIL_USER &&
+        process.env.EMAIL_PASS &&
+        process.env.RECEIVER_EMAIL
+    );
+  }
+
   async sendEmail({ name, email, message }) {
     if (!name || !email || !message) {
       throw new Error("All fields are required");
+    }
+
+    const contactMessage = await ContactMessage.create({
+      name: name.trim(),
+      email: email.trim(),
+      message: message.trim(),
+      deliveryStatus: "STORED_ONLY",
+    });
+
+    if (!this.hasEmailConfig()) {
+      return {
+        success: true,
+        stored: true,
+        emailed: false,
+        id: contactMessage._id.toString(),
+      };
     }
 
     const transporter = nodemailer.createTransport({
@@ -33,7 +58,15 @@ class ContactService {
     };
 
     await transporter.sendMail(mailOptions);
-    return { success: true };
+    contactMessage.deliveryStatus = "EMAILED";
+    await contactMessage.save();
+
+    return {
+      success: true,
+      stored: true,
+      emailed: true,
+      id: contactMessage._id.toString(),
+    };
   }
 }
 

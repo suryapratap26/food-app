@@ -1,4 +1,4 @@
-import { apiClient, getUserRole } from "./apiClient";
+import { apiClient, isManagerRole } from "./apiClient";
 
 const handleError = (error) => {
   const message =
@@ -43,8 +43,8 @@ export const getUserOrders = async () => {
 
 // ✅ Admin-only
 export const getAllOrders = async () => {
-  if (getUserRole() !== "ADMIN") {
-    throw new Error("Access denied: only admins can view all orders.");
+  if (!isManagerRole()) {
+    throw new Error("Access denied: only restaurant or admin accounts can view orders.");
   }
 
   try {
@@ -58,8 +58,8 @@ export const getAllOrders = async () => {
 
 // ✅ Admin-only
 export const updateOrderStatus = async (orderId, status) => {
-  if (getUserRole() !== "ADMIN") {
-    throw new Error("Access denied: only admins can update orders.");
+  if (!isManagerRole()) {
+    throw new Error("Access denied: only restaurant or admin accounts can update orders.");
   }
 
   try {

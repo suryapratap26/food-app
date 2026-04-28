@@ -1,7 +1,9 @@
 .contact-form {
-    background-color: #fff;
+    background: linear-gradient(180deg, rgba(24, 24, 24, 0.96), rgba(10, 10, 10, 0.98));
+    color: #fff1a6;
     border-radius: 20px;
     transition: all 0.3s ease;
+    border: 1px solid rgba(255, 209, 0, 0.12);
 }
 
 .contact-form:hover {
@@ -12,11 +14,12 @@
 .custom-input {
     border-radius: 10px;
     padding: 12px;
-    border: 1.5px solid #e9ecef;
+    border: 1.5px solid rgba(255, 209, 0, 0.18);
+    background: rgba(255, 248, 214, 0.96);
     transition: all 0.2s ease-in-out;
 }
 
 .custom-input:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 8px rgba(13, 110, 253, 0.2);
+    border-color: #ffd100;
+    box-shadow: 0 0 8px rgba(255, 209, 0, 0.2);
 }

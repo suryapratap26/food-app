@@ -3,13 +3,15 @@ import { storeContext } from "../../context/StoreContext";
 import FoodCard from "../foodCard/FoodCard";
 import "./foodDisplay.css";
 import { Link } from "react-router-dom";
+import { asset } from "../../assets/asset";
 
 const FoodDisplay = ({ category, searchText, isHomeView = false }) => {
-    const { foodList } = useContext(storeContext);
+    const { foodList, backendError, userProfile, token } = useContext(storeContext);
     const [filteredFood, setFilteredFood] = useState([]);
-    const [isLoading, setIsLoading] = useState(true); 
+    const [isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
-        setIsLoading(true); 
+        setIsLoading(true);
         const timeoutId = setTimeout(() => {
             const normalizedSearch = searchText.trim().toLowerCase();
             let newFilteredFood = [];
@@ -19,7 +21,11 @@ const FoodDisplay = ({ category, searchText, isHomeView = false }) => {
                 const matchesSearch =
                     food.name.toLowerCase().includes(normalizedSearch) ||
                     food.description?.toLowerCase().includes(normalizedSearch);
-                return matchesCategory && matchesSearch;
+
+                if (!matchesCategory || !matchesSearch) {
+                    return false;
+                }
+                return true;
             });
 
             const shouldLimitDisplay = isHomeView && category === "All";
@@ -37,11 +43,11 @@ const FoodDisplay = ({ category, searchText, isHomeView = false }) => {
             }
 
             setFilteredFood(newFilteredFood);
-            setIsLoading(false); 
-        }, 500); 
+            setIsLoading(false);
+        }, 500);
 
         return () => clearTimeout(timeoutId);
-    }, [category, searchText, foodList, isHomeView]);
+    }, [category, searchText, foodList, isHomeView, token, userProfile]);
 
     if (isLoading) {
         return (
@@ -71,19 +77,28 @@ const FoodDisplay = ({ category, searchText, isHomeView = false }) => {
 
             <div className="row">
                 {filteredFood.length > 0 ? (
-                    filteredFood.map((food) => <FoodCard key={food.id} food={food} />)
+                    filteredFood.map((food) => (
+                        <FoodCard
+                            key={food.id}
+                            food={food}
+                            userLocation={userProfile?.location}
+                        />
+                    ))
                 ) : (
                     <div className="col-12 text-center mt-5">
                         <img
-                            src="https://cdn-icons-png.flaticon.com/512/857/857681.png"
-                            alt="No results"
-                            width={120}
-                            height={120}
-                            className="mb-3 opacity-75"
+                            src={asset.logo}
+                            alt="App logo"
+                            width={96}
+                            height={96}
+                            className="mb-3 food-display__empty-logo"
                         />
-                        <h4 className="fw-semibold text-secondary">No food items found.</h4>
+                        <h4 className="fw-semibold text-secondary">
+                            {backendError ? "Server connection problem" : "No food items found."}
+                        </h4>
                         <p className="text-muted">
-                            Try adjusting your filters or search keywords.
+                            {backendError ||
+                                "Try adjusting your filters or search keywords."}
                         </p>
                     </div>
                 )}

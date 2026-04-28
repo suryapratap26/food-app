@@ -5,7 +5,7 @@ const PublicRoute = ({ element: Component }) => {
     const role = localStorage.getItem("role");
 
     if (token) {
-        return <Navigate to={role === "ADMIN" ? "/admin" : "/"} replace />;
+        return <Navigate to={role === "ADMIN" || role === "RESTAURANT" ? "/admin" : "/"} replace />;
     }
 
     return <Component />;
