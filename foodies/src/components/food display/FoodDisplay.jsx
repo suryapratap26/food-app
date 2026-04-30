@@ -69,9 +69,11 @@ const FoodDisplay = ({ category, searchText, isHomeView = false }) => {
                         : `${category} Dishes`}
                 </h2>
                 <p className="text-muted">
+                    <span className="food-display__intro d-inline-block">
                     {filteredFood.length
                         ? `Showing ${filteredFood.length} delicious option${filteredFood.length > 1 ? "s" : ""}`
                         : "No items match your search"}
+                    </span>
                 </p>
             </div>
 

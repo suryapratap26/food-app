@@ -3,6 +3,7 @@ import Cart from "../models/Cart.js";
 import Food from "../models/Food.js";
 import User from "../models/User.js";
 import Stripe from "stripe";
+import { randomUUID } from "crypto";
 
 // ==========================================================
 // 🛑 CHANGE 1: Remove the immediate top-level initialization
@@ -32,6 +33,9 @@ const VALID_ORDER_STATUSES = [
   "DELIVERED",
   "CANCELLED",
 ];
+const PLATFORM_FEE_RATE = 0.1;
+
+const roundCurrency = (value) => Math.round((Number(value) || 0) * 100) / 100;
 
 class OrderService {
   // Helpers
@@ -59,6 +63,46 @@ class OrderService {
     ]
       .filter(Boolean)
       .join(', ');
+  }
+
+  isRestaurantPayoutEligible(order) {
+    const isPaidOrder =
+      order.paymentStatus === "SUCCESS" || order.paymentMethod === "COD";
+    return isPaidOrder && order.orderStatus === "DELIVERED";
+  }
+
+  calculateRestaurantPayout(amount) {
+    const grossAmount = roundCurrency(amount);
+    const platformFeeAmount = roundCurrency(grossAmount * PLATFORM_FEE_RATE);
+    const netAmount = roundCurrency(grossAmount - platformFeeAmount);
+
+    return {
+      grossAmount,
+      platformFeeAmount,
+      netAmount,
+    };
+  }
+
+  summarizeRestaurantOrders(orders = []) {
+    return orders.reduce(
+      (summary, order) => {
+        const payout = this.calculateRestaurantPayout(order.amount);
+        return {
+          ordersCount: summary.ordersCount + 1,
+          grossAmount: roundCurrency(summary.grossAmount + payout.grossAmount),
+          platformFeeAmount: roundCurrency(
+            summary.platformFeeAmount + payout.platformFeeAmount
+          ),
+          netAmount: roundCurrency(summary.netAmount + payout.netAmount),
+        };
+      },
+      {
+        ordersCount: 0,
+        grossAmount: 0,
+        platformFeeAmount: 0,
+        netAmount: 0,
+      }
+    );
   }
 
   async buildOrderContext(orderRequest, user) {
@@ -146,6 +190,12 @@ class OrderService {
       paymentMethod: order.paymentMethod || "CARD",
       paymentStatus: order.paymentStatus,
       orderStatus: order.orderStatus,
+      restaurantClaimStatus: order.restaurantClaimStatus || "UNCLAIMED",
+      restaurantClaimedAt: order.restaurantClaimedAt || null,
+      restaurantClaimBatchId: order.restaurantClaimBatchId || null,
+      restaurantGrossAmount: order.restaurantGrossAmount ?? null,
+      platformFeeAmount: order.platformFeeAmount ?? null,
+      restaurantNetAmount: order.restaurantNetAmount ?? null,
       orderedItems: order.orderItemsList || [],
       stripePaymentIntentId: order.stripePaymentIntentId,
       stripeClientSecret: order.stripeClientSecret,
@@ -253,6 +303,78 @@ class OrderService {
         ? await Order.findByRestaurantId(actor._id.toString())
         : await Order.find({}).sort({ createdAt: -1 });
     return list.map((o) => this.convertToResponse(o));
+  }
+
+  async getRestaurantEarningsSummary(actor) {
+    if (actor?.role !== "RESTAURANT") {
+      throw new Error("Only restaurants can view payout summary.");
+    }
+
+    const restaurantId = actor._id.toString();
+    const orders = await Order.findByRestaurantId(restaurantId);
+    const eligibleOrders = orders.filter((order) =>
+      this.isRestaurantPayoutEligible(order)
+    );
+    const claimableOrders = eligibleOrders.filter(
+      (order) => order.restaurantClaimStatus !== "CLAIMED"
+    );
+    const claimedOrders = eligibleOrders.filter(
+      (order) => order.restaurantClaimStatus === "CLAIMED"
+    );
+    const lastClaimedAt =
+      claimedOrders
+        .map((order) => order.restaurantClaimedAt)
+        .filter(Boolean)
+        .sort((a, b) => new Date(b) - new Date(a))[0] || null;
+
+    return {
+      platformFeeRate: PLATFORM_FEE_RATE,
+      claimable: this.summarizeRestaurantOrders(claimableOrders),
+      claimed: this.summarizeRestaurantOrders(claimedOrders),
+      overall: this.summarizeRestaurantOrders(eligibleOrders),
+      lastClaimedAt,
+    };
+  }
+
+  async claimRestaurantEarnings(actor) {
+    if (actor?.role !== "RESTAURANT") {
+      throw new Error("Only restaurants can claim earnings.");
+    }
+
+    const restaurantId = actor._id.toString();
+    const orders = await Order.findByRestaurantId(restaurantId);
+    const claimableOrders = orders.filter(
+      (order) =>
+        this.isRestaurantPayoutEligible(order) &&
+        order.restaurantClaimStatus !== "CLAIMED"
+    );
+
+    if (!claimableOrders.length) {
+      throw new Error("No delivered earnings are available to claim right now.");
+    }
+
+    const claimedAt = new Date();
+    const claimBatchId = randomUUID();
+
+    await Promise.all(
+      claimableOrders.map(async (order) => {
+        const payout = this.calculateRestaurantPayout(order.amount);
+        order.restaurantClaimStatus = "CLAIMED";
+        order.restaurantClaimedAt = claimedAt;
+        order.restaurantClaimBatchId = claimBatchId;
+        order.restaurantGrossAmount = payout.grossAmount;
+        order.platformFeeAmount = payout.platformFeeAmount;
+        order.restaurantNetAmount = payout.netAmount;
+        await order.save();
+      })
+    );
+
+    return {
+      claimBatchId,
+      claimedAt,
+      platformFeeRate: PLATFORM_FEE_RATE,
+      ...this.summarizeRestaurantOrders(claimableOrders),
+    };
   }
 
   async updateOrder(orderId, status, actor) {

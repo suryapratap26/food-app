@@ -1,11 +1,20 @@
 import AdminLayout from "./AdminLayout";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import orderService from "../../service/orderService";
 import { fetchFoodList } from "../../service/foodService";
 import { getPendingRestaurants } from "../../service/userService";
 
 const formatCurrency = (value) => `Rs ${Number(value || 0).toFixed(2)}`;
+
+const emptyPayoutSummary = {
+  platformFeeRate: 0.1,
+  claimable: { ordersCount: 0, grossAmount: 0, platformFeeAmount: 0, netAmount: 0 },
+  claimed: { ordersCount: 0, grossAmount: 0, platformFeeAmount: 0, netAmount: 0 },
+  overall: { ordersCount: 0, grossAmount: 0, platformFeeAmount: 0, netAmount: 0 },
+  lastClaimedAt: null,
+};
 
 const AdminDashboard = () => {
   const [totalOrders, setTotalOrders] = useState(0);
@@ -15,54 +24,79 @@ const AdminDashboard = () => {
   const [activeOrders, setActiveOrders] = useState(0);
   const [recentOrders, setRecentOrders] = useState([]);
   const [ordersByStatus, setOrdersByStatus] = useState({});
+  const [payoutSummary, setPayoutSummary] = useState(emptyPayoutSummary);
   const [isLoading, setIsLoading] = useState(true);
+  const [isClaiming, setIsClaiming] = useState(false);
   const role = localStorage.getItem("role");
   const profile = JSON.parse(localStorage.getItem("profile") || "null");
   const isRestaurant = role === "RESTAURANT";
 
-  useEffect(() => {
-    const loadStats = async () => {
-      try {
-        setIsLoading(true);
-        const orders = await orderService.getAllOrders();
-        const foods = await fetchFoodList(
-          isRestaurant && profile?.id ? { managerRestaurantId: profile.id } : {}
-        );
+  const loadStats = async () => {
+    try {
+      setIsLoading(true);
+      const orders = await orderService.getAllOrders();
+      const foods = await fetchFoodList(
+        isRestaurant && profile?.id ? { managerRestaurantId: profile.id } : {}
+      );
 
-        setTotalOrders(orders.length);
-        setTotalFoods(foods.length);
-        setRecentOrders((orders || []).slice(0, 5));
+      setTotalOrders(orders.length);
+      setTotalFoods(foods.length);
+      setRecentOrders((orders || []).slice(0, 5));
 
-        const successfulOrders = (orders || []).filter(
-          (order) => order.paymentStatus === "SUCCESS" || order.paymentMethod === "COD"
-        );
-        setTotalRevenue(
-          successfulOrders.reduce((sum, order) => sum + (Number(order.amount) || 0), 0)
-        );
+      const successfulOrders = (orders || []).filter(
+        (order) => order.paymentStatus === "SUCCESS" || order.paymentMethod === "COD"
+      );
+      setTotalRevenue(
+        successfulOrders.reduce((sum, order) => sum + (Number(order.amount) || 0), 0)
+      );
 
-        const active = (orders || []).filter((order) =>
-          ["PLACED", "PROCESSING", "PREPARING", "AWAITING_PAYMENT"].includes(order.orderStatus)
-        ).length;
-        setActiveOrders(active);
+      const active = (orders || []).filter((order) =>
+        ["PLACED", "PROCESSING", "PREPARING", "AWAITING_PAYMENT"].includes(order.orderStatus)
+      ).length;
+      setActiveOrders(active);
 
-        const groupedStatus = (orders || []).reduce((acc, order) => {
-          acc[order.orderStatus] = (acc[order.orderStatus] || 0) + 1;
-          return acc;
-        }, {});
-        setOrdersByStatus(groupedStatus);
+      const groupedStatus = (orders || []).reduce((acc, order) => {
+        acc[order.orderStatus] = (acc[order.orderStatus] || 0) + 1;
+        return acc;
+      }, {});
+      setOrdersByStatus(groupedStatus);
 
-        if (!isRestaurant) {
-          const pending = await getPendingRestaurants();
-          setPendingRestaurants(pending.length);
-        }
-      } catch (error) {
-        console.error("Failed to load admin stats:", error);
-      } finally {
-        setIsLoading(false);
+      if (isRestaurant) {
+        const summary = await orderService.getRestaurantEarningsSummary();
+        setPayoutSummary(summary || emptyPayoutSummary);
+      } else {
+        const pending = await getPendingRestaurants();
+        setPendingRestaurants(pending.length);
       }
-    };
+    } catch (error) {
+      console.error("Failed to load admin stats:", error);
+      toast.error(error.message || "Failed to load dashboard data.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     loadStats();
   }, [isRestaurant, profile?.id]);
+
+  const handleClaimPayout = async () => {
+    try {
+      setIsClaiming(true);
+      const claim = await orderService.claimRestaurantEarnings();
+      toast.success(
+        `Claimed ${formatCurrency(claim.netAmount)} after ${formatCurrency(
+          claim.platformFeeAmount
+        )} platform fee deduction.`
+      );
+      await loadStats();
+    } catch (error) {
+      console.error("Failed to claim earnings:", error);
+      toast.error(error.message || "Failed to claim earnings.");
+    } finally {
+      setIsClaiming(false);
+    }
+  };
 
   const overviewCards = useMemo(
     () =>
@@ -81,16 +115,16 @@ const AdminDashboard = () => {
               icon: "bi-basket",
             },
             {
-              label: "Revenue Snapshot",
-              value: formatCurrency(totalRevenue),
-              meta: "Successful and COD orders combined",
-              icon: "bi-cash-stack",
+              label: "Claimable Now",
+              value: formatCurrency(payoutSummary.claimable.netAmount),
+              meta: `${payoutSummary.claimable.ordersCount} delivered orders after 10% fee`,
+              icon: "bi-wallet2",
             },
             {
-              label: "Store Status",
-              value: "Active",
-              meta: "Visible to customers right now",
-              icon: "bi-shop-window",
+              label: "Claimed So Far",
+              value: formatCurrency(payoutSummary.claimed.netAmount),
+              meta: "Total net payouts already claimed",
+              icon: "bi-cash-coin",
             },
           ]
         : [
@@ -119,7 +153,17 @@ const AdminDashboard = () => {
               icon: "bi-graph-up-arrow",
             },
           ],
-    [activeOrders, isRestaurant, pendingRestaurants, totalFoods, totalOrders, totalRevenue]
+    [
+      activeOrders,
+      isRestaurant,
+      payoutSummary.claimable.netAmount,
+      payoutSummary.claimable.ordersCount,
+      payoutSummary.claimed.netAmount,
+      pendingRestaurants,
+      totalFoods,
+      totalOrders,
+      totalRevenue,
+    ]
   );
 
   const quickLinks = isRestaurant
@@ -152,7 +196,7 @@ const AdminDashboard = () => {
               </h2>
               <p className="mb-0" style={{ maxWidth: 720 }}>
                 {isRestaurant
-                  ? "Use this dashboard to react quickly, keep the menu fresh, and maintain a smooth order pipeline."
+                  ? "Use this dashboard to react quickly, keep the menu fresh, track delivered earnings, and claim payouts after the 10% platform fee."
                   : "Use this control center to keep the platform healthy, respond to approvals, and stay ahead of activity spikes."}
               </p>
             </div>
@@ -168,8 +212,12 @@ const AdminDashboard = () => {
                   <strong>{activeOrders}</strong>
                 </div>
                 <div className="d-flex justify-content-between">
-                  <span>{isRestaurant ? "Sales snapshot" : "Pending approvals"}</span>
-                  <strong>{isRestaurant ? formatCurrency(totalRevenue) : pendingRestaurants}</strong>
+                  <span>{isRestaurant ? "Claimable payout" : "Pending approvals"}</span>
+                  <strong>
+                    {isRestaurant
+                      ? formatCurrency(payoutSummary.claimable.netAmount)
+                      : pendingRestaurants}
+                  </strong>
                 </div>
               </div>
             </div>
@@ -235,6 +283,56 @@ const AdminDashboard = () => {
           </div>
 
           <div className="col-xl-5">
+            {isRestaurant && (
+              <div className="dashboard-card h-100 mb-4">
+                <div className="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
+                  <div>
+                    <h3 className="dashboard-section-title h4 mb-1">Payout Wallet</h3>
+                    <p className="text-muted mb-0">
+                      Restaurants can claim delivered-order earnings after the 10% platform fee.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-primary rounded-pill"
+                    onClick={handleClaimPayout}
+                    disabled={isLoading || isClaiming || payoutSummary.claimable.netAmount <= 0}
+                  >
+                    {isClaiming ? "Claiming..." : "Claim Money"}
+                  </button>
+                </div>
+
+                <div className="dashboard-list">
+                  <div className="dashboard-list__item">
+                    <span className="fw-semibold">Gross claimable</span>
+                    <span>{formatCurrency(payoutSummary.claimable.grossAmount)}</span>
+                  </div>
+                  <div className="dashboard-list__item">
+                    <span className="fw-semibold">Platform fee ({payoutSummary.platformFeeRate * 100}%)</span>
+                    <span>{formatCurrency(payoutSummary.claimable.platformFeeAmount)}</span>
+                  </div>
+                  <div className="dashboard-list__item">
+                    <span className="fw-semibold">Net payout</span>
+                    <span>{formatCurrency(payoutSummary.claimable.netAmount)}</span>
+                  </div>
+                  <div className="dashboard-list__item">
+                    <span className="fw-semibold">Eligible delivered orders</span>
+                    <span>{payoutSummary.claimable.ordersCount}</span>
+                  </div>
+                  <div className="dashboard-list__item">
+                    <span className="fw-semibold">Lifetime claimed</span>
+                    <span>{formatCurrency(payoutSummary.claimed.netAmount)}</span>
+                  </div>
+                </div>
+
+                <div className="small text-muted mt-3">
+                  {payoutSummary.lastClaimedAt
+                    ? `Last claimed on ${new Date(payoutSummary.lastClaimedAt).toLocaleString("en-IN")}.`
+                    : "No payouts have been claimed yet."}
+                </div>
+              </div>
+            )}
+
             <div className="dashboard-card h-100 mb-4">
               <h3 className="dashboard-section-title h4 mb-3">Quick Actions</h3>
               <div className="dashboard-quick-grid">

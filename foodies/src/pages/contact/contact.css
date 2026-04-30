@@ -1,25 +1,50 @@
-.contact-form {
-    background: linear-gradient(180deg, rgba(24, 24, 24, 0.96), rgba(10, 10, 10, 0.98));
-    color: #fff1a6;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 209, 0, 0.12);
+.contact-page {
+    background:
+        radial-gradient(circle at top right, rgba(243, 180, 63, 0.16), transparent 24%),
+        transparent;
 }
 
-.contact-form:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+.contact-form {
+    background: linear-gradient(180deg, rgba(255, 252, 246, 0.96), rgba(255, 246, 236, 0.92));
+    color: var(--brand-ink);
+    border-radius: 28px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(91, 58, 33, 0.1);
+    box-shadow: var(--brand-shadow-strong);
+}
+
+.contact-page__aside {
+    padding: 2rem;
+    border-radius: 28px;
+    background: linear-gradient(135deg, #241713 0%, #3d261f 100%);
+    color: #fff2d2;
+    box-shadow: 0 28px 70px rgba(52, 31, 22, 0.22);
+}
+
+.contact-page__eyebrow {
+    color: #ffd991;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.contact-page__point {
+    padding: 0.95rem 1rem;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .custom-input {
-    border-radius: 10px;
-    padding: 12px;
-    border: 1.5px solid rgba(255, 209, 0, 0.18);
-    background: rgba(255, 248, 214, 0.96);
+    border-radius: 18px;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(91, 58, 33, 0.16);
+    background: rgba(255, 252, 246, 0.96);
     transition: all 0.2s ease-in-out;
 }
 
 .custom-input:focus {
-    border-color: #ffd100;
-    box-shadow: 0 0 8px rgba(255, 209, 0, 0.2);
+    border-color: #f3b43f;
+    box-shadow: 0 0 0 0.22rem rgba(243, 180, 63, 0.16);
 }

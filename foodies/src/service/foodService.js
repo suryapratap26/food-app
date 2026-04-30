@@ -37,13 +37,22 @@ export const addFood = async (foodData, file) => {
   }
 
   try {
-    const formData = new FormData();
-    formData.append("food", JSON.stringify(foodData));
-    formData.append("file", file);
+    const payload =
+      file && typeof file !== "string"
+        ? (() => {
+            const formData = new FormData();
+            formData.append("food", JSON.stringify(foodData));
+            formData.append("file", file);
+            return formData;
+          })()
+        : { ...foodData, imageUrl: file || foodData.imageUrl || "" };
 
-    const response = await apiClient.post("/api/food", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const config =
+      file && typeof file !== "string"
+        ? { headers: { "Content-Type": "multipart/form-data" } }
+        : undefined;
+
+    const response = await apiClient.post("/api/food", payload, config);
     return response.data;
   } catch (error) {
     console.error("addFood error:", error);

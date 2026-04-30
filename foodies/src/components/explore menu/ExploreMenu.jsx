@@ -18,7 +18,7 @@ const ExploreMenu = ({ category, setCategory }) => {
     };
 
     return (
-        <div className="container my-5">
+        <div className="container my-5 app-section">
             <div className="explore-menu-panel surface-card p-4 p-md-5">
             <div className="d-flex justify-content-between align-items-center mb-3">
                 <div>
@@ -37,8 +37,8 @@ const ExploreMenu = ({ category, setCategory }) => {
                 </div>
             </div>
 
-            <p className="text-muted mb-4">
-                Order from our best food options
+            <p className="text-muted mb-4 explore-menu-copy">
+                Browse curated categories and jump straight into the flavors you are craving today.
             </p>
 
             <div ref={menuRef} className="d-flex overflow-auto gap-4 pb-3 scroll-snap">
@@ -47,7 +47,7 @@ const ExploreMenu = ({ category, setCategory }) => {
                     return (
                         <div
                             key={index}
-                            className={`category-card text-center flex-shrink-0 p-3 rounded shadow-sm ${
+                            className={`category-card text-center flex-shrink-0 p-3 rounded-4 ${
                                 isActive ? "active-category" : ""
                             }`}
                             style={{ width: "120px" }}

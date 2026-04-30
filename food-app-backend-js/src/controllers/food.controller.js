@@ -4,16 +4,19 @@ import fs from 'fs';
 class FoodController {
   async addFood(req, res) {
     const file = req.file;
-    const foodString = req.body.food;
-
     let foodRequest;
-    try {
-      foodRequest = JSON.parse(foodString);
-    } catch (e) {
-      if (file) {
-        try { fs.unlinkSync(file.path); } catch (err) { /* ignore cleanup error */ }
+
+    if (typeof req.body.food === 'string') {
+      try {
+        foodRequest = JSON.parse(req.body.food);
+      } catch (e) {
+        if (file?.path) {
+          try { fs.unlinkSync(file.path); } catch (err) { /* ignore cleanup error */ }
+        }
+        return res.status(400).send({ message: 'Invalid JSON format for food data.' });
       }
-      return res.status(400).send({ message: 'Invalid JSON format for food data.' });
+    } else {
+      foodRequest = req.body;
     }
 
     try {

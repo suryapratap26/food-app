@@ -63,6 +63,7 @@ class FoodService {
       name: request.name,
       description: request.description,
       price: request.price,
+      imageUrl: request.imageUrl?.trim?.() || request.image?.trim?.() || '',
       category: request.category,
       restaurantId: restaurant._id.toString(),
       restaurantName:
@@ -137,9 +138,15 @@ class FoodService {
     }
 
     const food = this.convertRequestIntoFood(foodRequest, restaurant);
-    const foodUrl = await this.uploadFile(file);
+    if (file) {
+      const foodUrl = await this.uploadFile(file);
+      food.imageUrl = foodUrl;
+    }
 
-    food.imageUrl = foodUrl;
+    if (!food.imageUrl) {
+      throw new Error('Image is required.');
+    }
+
     await food.save();
     return this.convertFoodIntoResponse(food);
   }
@@ -220,6 +227,11 @@ class FoodService {
 
     const foodResponse = this.convertFoodIntoResponse(food);
     const publicId = this.extractPublicIdFromUrl(foodResponse.imageUrl);
+
+    if (!publicId) {
+      await Food.findByIdAndDelete(foodResponse.id);
+      return;
+    }
 
     const isFileDeleted = await this.deleteFile(publicId);
     if (isFileDeleted) {

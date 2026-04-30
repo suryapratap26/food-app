@@ -96,7 +96,7 @@
     margin-top: 1rem;
     font-size: 1.02rem;
     line-height: 1.75;
-    color: rgba(255, 243, 176, 0.82);
+    color: rgba(255, 245, 212, 0.96);
 }
 
 .login-shell__highlights {
@@ -130,6 +130,28 @@
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     color: #fff3b0;
+}
+
+.login-card .text-secondary,
+.login-card .text-muted,
+.login-card .small,
+.login-card .form-label,
+.login-card label,
+.login-card p,
+.login-card span,
+.login-card li {
+    color: rgba(255, 245, 212, 0.92) !important;
+}
+
+.login-card input,
+.login-card select,
+.login-card textarea {
+    color: #24160f !important;
+}
+
+.login-card input::placeholder,
+.login-card textarea::placeholder {
+    color: rgba(36, 22, 15, 0.72) !important;
 }
 
 .login-card__icon {

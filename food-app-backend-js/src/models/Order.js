@@ -36,6 +36,12 @@ const orderSchema = new mongoose.Schema(
     paymentMethod: { type: String, default: 'CARD' },
     paymentStatus: { type: String, default: 'INITIATED' },
     orderStatus: { type: String, default: 'INITIATED' },
+    restaurantClaimStatus: { type: String, default: 'UNCLAIMED' },
+    restaurantClaimedAt: { type: Date },
+    restaurantClaimBatchId: { type: String },
+    restaurantGrossAmount: { type: Number },
+    platformFeeAmount: { type: Number },
+    restaurantNetAmount: { type: Number },
     stripePaymentIntentId: { type: String, index: true, sparse: true },
     stripeClientSecret: { type: String }
   },

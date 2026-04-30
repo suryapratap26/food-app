@@ -41,7 +41,6 @@ export const getUserOrders = async () => {
   }
 };
 
-// ✅ Admin-only
 export const getAllOrders = async () => {
   if (!isManagerRole()) {
     throw new Error("Access denied: only restaurant or admin accounts can view orders.");
@@ -56,14 +55,40 @@ export const getAllOrders = async () => {
   }
 };
 
-// ✅ Admin-only
+export const getRestaurantEarningsSummary = async () => {
+  if (localStorage.getItem("role") !== "RESTAURANT") {
+    throw new Error("Access denied: only restaurant accounts can view payout summary.");
+  }
+
+  try {
+    const response = await apiClient.get("/api/orders/restaurant/earnings");
+    return response.data;
+  } catch (error) {
+    console.error("getRestaurantEarningsSummary error:", error);
+    handleError(error);
+  }
+};
+
+export const claimRestaurantEarnings = async () => {
+  if (localStorage.getItem("role") !== "RESTAURANT") {
+    throw new Error("Access denied: only restaurant accounts can claim earnings.");
+  }
+
+  try {
+    const response = await apiClient.post("/api/orders/restaurant/claim");
+    return response.data;
+  } catch (error) {
+    console.error("claimRestaurantEarnings error:", error);
+    handleError(error);
+  }
+};
+
 export const updateOrderStatus = async (orderId, status) => {
   if (!isManagerRole()) {
     throw new Error("Access denied: only restaurant or admin accounts can update orders.");
   }
 
   try {
-    // Send field name that backend expects
     const response = await apiClient.put(`/api/orders/${orderId}`, { orderStatus: status });
     return response.data;
   } catch (error) {
@@ -87,6 +112,8 @@ const orderService = {
   verifyPayment,
   getUserOrders,
   getAllOrders,
+  getRestaurantEarningsSummary,
+  claimRestaurantEarnings,
   updateOrderStatus,
   removeOrder,
 };

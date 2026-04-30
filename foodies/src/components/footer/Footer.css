@@ -1,29 +1,45 @@
 .footer-section {
+    margin-top: 3rem;
     background:
-        linear-gradient(135deg, rgba(0, 0, 0, 0.98), rgba(110, 0, 0, 0.94)),
-        linear-gradient(180deg, rgba(255, 209, 0, 0.1), rgba(255, 209, 0, 0));
+        radial-gradient(circle at top left, rgba(243, 180, 63, 0.18), transparent 18%),
+        linear-gradient(135deg, #1b120f, #2d1a14 58%, #43241d);
 }
 
 .footer-logo {
-    border: 3px solid rgba(255, 209, 0, 0.85);
-    box-shadow: 0 12px 28px rgba(255, 209, 0, 0.15);
+    border: 3px solid rgba(255, 227, 166, 0.7);
+    box-shadow: 0 12px 28px rgba(243, 180, 63, 0.18);
+}
+
+.footer-section h5 {
+    color: #fff6db;
+    font-weight: 800;
+}
+
+.footer-copy {
+    color: rgba(255, 242, 210, 0.84);
+    max-width: 320px;
 }
 
 .footer-links li {
-    margin-bottom: 0.7rem;
+    margin-bottom: 0.8rem;
 }
 
 .footer-links a,
 .footer-social {
     transition: color 0.2s ease, transform 0.2s ease;
+    color: rgba(255, 242, 210, 0.88);
 }
 
 .footer-links a:hover,
 .footer-social:hover {
-    color: #ffd100 !important;
+    color: #ffd891 !important;
     transform: translateX(2px);
 }
 
+.footer-contact {
+    color: rgba(255, 242, 210, 0.84);
+}
+
 .footer-divider {
-    border-color: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.14);
 }

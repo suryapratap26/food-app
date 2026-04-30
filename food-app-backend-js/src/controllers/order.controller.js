@@ -59,6 +59,26 @@ class OrderController {
     }
   }
 
+  async getRestaurantEarningsSummary(req, res) {
+    try {
+      const response = await orderService.getRestaurantEarningsSummary(req.user);
+      return res.status(200).json(response);
+    } catch (error) {
+      console.error('Get Restaurant Earnings Summary Error:', error);
+      return res.status(403).json({ message: error.message || 'Failed to retrieve payout summary.' });
+    }
+  }
+
+  async claimRestaurantEarnings(req, res) {
+    try {
+      const response = await orderService.claimRestaurantEarnings(req.user);
+      return res.status(200).json(response);
+    } catch (error) {
+      console.error('Claim Restaurant Earnings Error:', error);
+      return res.status(400).json({ message: error.message || 'Failed to claim restaurant earnings.' });
+    }
+  }
+
   async updateOrder(req, res) {
     const status = req.body.orderStatus;
     if (!status) return res.status(400).json({ message: 'Order status is required.' });

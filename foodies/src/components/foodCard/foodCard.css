@@ -1,15 +1,16 @@
 .food-card {
     transition: all 0.3s ease-in-out;
     overflow: hidden;
-    border-radius: 24px;
-    box-shadow: 0 18px 38px rgba(0, 0, 0, 0.24);
-    background: linear-gradient(180deg, #191919, #090909);
-    color: #fff1a6;
+    border-radius: 26px;
+    box-shadow: 0 18px 38px rgba(113, 76, 45, 0.12);
+    background: linear-gradient(180deg, #fffdf8, #fff5e8);
+    color: var(--brand-ink);
+    border: 1px solid rgba(91, 58, 33, 0.08);
 }
 
 .food-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 22px 45px rgba(214, 40, 40, 0.15);
+    box-shadow: 0 24px 50px rgba(113, 76, 45, 0.16);
 }
 
 .food-card .card-body {
@@ -17,7 +18,7 @@
 }
 
 .food-image {
-    height: 200px;
+    height: 210px;
     object-fit: cover;
     transition: transform 0.4s ease;
 }
@@ -26,60 +27,29 @@
     transform: scale(1.05);
 }
 
-.food-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(214, 40, 40, 0.34);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.food-card:hover .food-overlay {
-    opacity: 1;
-}
-
-.food-overlay .btn {
-    transform: translateY(10px);
-    transition: all 0.3s ease;
-}
-
-.food-card:hover .food-overlay .btn {
-    transform: translateY(0);
-}
-
-.rating i {
-    font-size: 0.85rem;
-}
-
 .card-title {
-    font-size: 1.1rem;
-    color: #ffd100;
+    font-size: 1.12rem;
+    color: var(--brand-ink);
+    font-weight: 800;
 }
 
 .food-card__description {
-    min-height: 48px;
-    color: rgba(255, 241, 166, 0.78);
+    min-height: 52px;
+    color: var(--brand-ink-soft);
 }
 
 .food-card__price {
-    color: #fff1a6;
+    color: var(--brand-red);
+    font-weight: 800;
 }
 
 .food-card__rating .text-muted {
-    color: rgba(255, 241, 166, 0.65) !important;
-}
-
-.card-footer button {
-    transition: all 0.2s ease-in-out;
-}
-
-.card-footer button:hover {
-    transform: scale(1.05);
+    color: var(--brand-ink-soft) !important;
 }
 
 .food-card__footer {
-    background: rgba(23, 23, 23, 0.94);
-    border-top: 1px solid rgba(255, 209, 0, 0.12);
+    background: rgba(255, 250, 243, 0.92);
+    border-top: 1px solid rgba(91, 58, 33, 0.08);
 }
 
 .food-card__icon-btn {
@@ -94,5 +64,5 @@
 .food-card__qty {
     min-width: 20px;
     text-align: center;
-    color: #ffd100;
+    color: var(--brand-red);
 }

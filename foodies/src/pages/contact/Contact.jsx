@@ -23,12 +23,38 @@ const Contact = () => {
   };
 
   return (
-    <section className="py-5 bg-light">
+    <section className="py-5 contact-page app-section">
       <div className="container">
         <div className="row justify-content-center">
-          <div className="col-lg-8">
+          <div className="col-lg-5 mb-4 mb-lg-0">
+            <div className="contact-page__aside h-100">
+              <div className="contact-page__eyebrow mb-3">Contact KSPK Foods</div>
+              <h2 className="fw-bold mb-3">Let’s make your next food experience even better.</h2>
+              <p className="mb-4 text-light">
+                Questions, feedback, partnership ideas, or support requests. Send us a message and we will get back to you.
+              </p>
+              <div className="d-grid gap-3">
+                <div className="contact-page__point">
+                  <div className="fw-semibold mb-1">Fast support</div>
+                  <div className="small">Use this form for help with orders, payments, or account issues.</div>
+                </div>
+                <div className="contact-page__point">
+                  <div className="fw-semibold mb-1">Partnership friendly</div>
+                  <div className="small">Restaurants and collaborators can reach out directly here too.</div>
+                </div>
+                <div className="contact-page__point">
+                  <div className="fw-semibold mb-1">Stored safely</div>
+                  <div className="small">Your contact message is saved even if email delivery is not configured.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-lg-7">
             <div className="contact-form p-5 shadow-sm bg-white rounded-4">
               <h2 className="text-center mb-4 fw-bold text-primary">Get in Touch</h2>
+              <p className="text-center text-muted mb-4">
+                Fill in your details and tell us how we can help.
+              </p>
               <form onSubmit={handleSubmit}>
                 <div className="row g-3">
                   <div className="col-md-6">

@@ -6,39 +6,44 @@
 .explore-menu-panel::before {
     content: "";
     position: absolute;
-    inset: auto -10% -45% auto;
-    width: 220px;
-    height: 220px;
+    inset: auto -10% -40% auto;
+    width: 260px;
+    height: 260px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 209, 0, 0.22), transparent 70%);
+    background: radial-gradient(circle, rgba(243, 180, 63, 0.22), transparent 72%);
     pointer-events: none;
 }
 
 .explore-menu-kicker {
-    color: #d62828;
+    color: var(--brand-red);
     font-size: 0.82rem;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
+.explore-menu-copy {
+    max-width: 520px;
+}
+
 .category-card {
-    background: linear-gradient(180deg, rgba(24, 24, 24, 0.98), rgba(10, 10, 10, 0.96));
-    transition: all 0.3s ease;
+    background: linear-gradient(180deg, rgba(255, 253, 248, 0.98), rgba(255, 246, 235, 0.94));
+    transition: all 0.28s ease;
     cursor: pointer;
     text-align: center;
-    border: 1px solid rgba(255, 209, 0, 0.12);
-    color: #fff1a6;
+    border: 1px solid rgba(91, 58, 33, 0.1);
+    color: var(--brand-ink);
+    box-shadow: 0 12px 28px rgba(113, 76, 45, 0.08);
 }
 
 .category-card:hover {
-    transform: translateY(-5px) scale(1.05);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 34px rgba(113, 76, 45, 0.12);
 }
 
 .active-category {
-    background: linear-gradient(180deg, rgba(255, 209, 0, 0.18), rgba(214, 40, 40, 0.18));
-    border: 2px solid #d62828 !important;
+    background: linear-gradient(180deg, rgba(255, 241, 211, 0.96), rgba(255, 226, 184, 0.92));
+    border: 1px solid rgba(200, 68, 45, 0.28) !important;
 }
 
 .category-icon {
@@ -46,10 +51,11 @@
     height: 70px;
     object-fit: cover;
     transition: all 0.3s ease;
+    box-shadow: 0 10px 22px rgba(113, 76, 45, 0.12);
 }
 
 .category-icon:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .hover-scale {
@@ -57,7 +63,7 @@
 }
 
 .hover-scale:hover {
-    transform: scale(1.15);
+    transform: scale(1.08);
 }
 
 .scroll-snap {

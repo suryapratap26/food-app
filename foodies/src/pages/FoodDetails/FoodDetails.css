@@ -1,12 +1,29 @@
+.food-details-main {
+    margin-bottom: 1rem;
+}
+
+.food-details-media-card,
+.food-details-summary,
+.food-details-review-card {
+    border-radius: 28px;
+    border: 1px solid rgba(91, 58, 33, 0.08);
+    background: linear-gradient(180deg, rgba(255, 253, 248, 0.96), rgba(255, 246, 236, 0.92));
+    box-shadow: 0 22px 55px rgba(113, 76, 45, 0.1);
+}
+
+.food-details-summary {
+    padding: 2rem;
+}
+
 .food-details-section .food-img {
     object-fit: cover;
     width: 100%;
-    height: 400px;
+    height: 460px;
     transition: transform 0.3s ease;
 }
 
 .food-details-section .food-img:hover {
-    transform: scale(1.05);
+    transform: scale(1.04);
 }
 
 .quantity-selector input {
@@ -15,7 +32,7 @@
 }
 
 .quantity-selector button {
-    border-radius: 0.375rem;
+    border-radius: 0.75rem;
 }
 
 .quantity-selector button:hover {
@@ -50,12 +67,40 @@
 }
 
 .food-details-rating__meta {
-    color: #667085;
-    font-weight: 500;
+    color: var(--brand-ink-muted);
+    font-weight: 600;
 }
 
 .food-details-review-card {
     background: linear-gradient(180deg, #fffdf8 0%, #ffffff 100%);
+}
+
+.food-details-review-form-shell {
+    padding: 1.5rem;
+    border-radius: 24px;
+    background: rgba(255, 248, 238, 0.8);
+    border: 1px solid rgba(91, 58, 33, 0.08);
+}
+
+.food-details-review-summary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.food-details-review-summary__score {
+    width: 88px;
+    height: 88px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #fff2c6, #ffd891);
+    color: #4d2d17;
+    font-size: 2rem;
+    font-weight: 800;
+    box-shadow: 0 14px 28px rgba(243, 180, 63, 0.2);
 }
 
 .food-details-review-stars {
@@ -81,12 +126,33 @@
     transform: translateY(-1px);
 }
 
+.food-details-review-list--full {
+    min-height: 100%;
+}
+
 .food-details-review-item {
-    padding: 1rem 0;
+    padding: 1.1rem 0;
     border-top: 1px solid rgba(15, 23, 42, 0.08);
 }
 
 .food-details-review-item:first-child {
     border-top: none;
     padding-top: 0;
+}
+
+@media (max-width: 991.98px) {
+    .food-details-summary {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .food-details-section .food-img {
+        height: 320px;
+    }
+
+    .food-details-summary,
+    .food-details-review-card {
+        border-radius: 22px;
+    }
 }

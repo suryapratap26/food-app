@@ -22,6 +22,8 @@ router.delete('/:orderId', requireAuth, orderController.removeOrder);
 
 // Admin actions
 router.get('/all', requireAuth, checkOrderManagerRole, orderController.getOrdersOfAllUsers);
+router.get('/restaurant/earnings', requireAuth, checkOrderManagerRole, orderController.getRestaurantEarningsSummary);
+router.post('/restaurant/claim', requireAuth, checkOrderManagerRole, orderController.claimRestaurantEarnings);
 router.put('/:orderId', requireAuth, checkOrderManagerRole, orderController.updateOrder);
 
 export default router;

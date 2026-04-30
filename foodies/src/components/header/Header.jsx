@@ -20,12 +20,15 @@ const Header = () => {
 
             <div className="container position-relative z-1 d-flex flex-column justify-content-center align-items-center min-vh-100">
                 <div className="header-content animate-fade">
-                    <span className="header-chip">Fresh Food Delivered</span>
+                    <span className="header-chip">
+                        <i className="bi bi-lightning-charge-fill"></i>
+                        Fresh Food Delivered
+                    </span>
                     <h1 className="display-4 fw-bold mb-3">
                         Order <span className="text-gradient fw-bolder">Good Food</span> Fast
                     </h1>
                     <p className="lead mb-4 header-copy">
-                        Simple ordering, fresh meals, and your favorite dishes in one place.
+                        Discover comfort food, quick bites, and crowd favorites in one warm, easy ordering experience.
                     </p>
                     <div className="d-flex flex-column flex-sm-row justify-content-center gap-3">
                         <Link
@@ -40,6 +43,20 @@ const Header = () => {
                         >
                             Contact Us
                         </Link>
+                    </div>
+                    <div className="header-metrics">
+                        <div className="header-metric">
+                            <div className="header-metric__value">100+</div>
+                            <div className="header-metric__label">Popular dishes</div>
+                        </div>
+                        <div className="header-metric">
+                            <div className="header-metric__value">2 Ways</div>
+                            <div className="header-metric__label">Card and cash payment</div>
+                        </div>
+                        <div className="header-metric">
+                            <div className="header-metric__value">Real Reviews</div>
+                            <div className="header-metric__label">Customer ratings on foods</div>
+                        </div>
                     </div>
                 </div>
             </div>

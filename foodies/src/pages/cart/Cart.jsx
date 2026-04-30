@@ -24,14 +24,25 @@ const Cart = () => {
   };
 
   return (
-    <div className="container py-5">
-      <h1 className="mb-5">Your Shopping Cart</h1>
+    <div className="container py-5 app-section">
+      <div className="mb-5">
+        <h1 className="cart-page__title mb-2">Your Shopping Cart</h1>
+        <p className="cart-page__subtitle text-muted mb-0">
+          Review your selected dishes, adjust quantities, and head to checkout when everything looks right.
+        </p>
+      </div>
       <div className="row">
         <div className="col-lg-8">
           {cartItems.length === 0 ? (
-            <p className="text-muted">Your cart is empty.</p>
+            <div className="cart-empty">
+              <h4 className="fw-bold mb-2">Your cart is empty</h4>
+              <p className="text-muted mb-3">Add a few dishes and they will appear here with a clean order summary.</p>
+              <Link to="/explore" className="btn btn-primary px-4">
+                Explore Food
+              </Link>
+            </div>
           ) : (
-            <div className="card mb-4 shadow-sm">
+            <div className="card mb-4 shadow-sm cart-page__card border-0">
               <div className="card-body">
                 {cartItems.map((food) => (
                   <div
@@ -100,8 +111,8 @@ const Cart = () => {
         </div>
 
         <div className="col-lg-4 ">
-          <div className="card cart-summary shadow-sm">
-            <div className="card-body bg-white">
+            <div className="card cart-summary shadow-sm border-0">
+            <div className="card-body">
               <h5 className="card-title mb-4">Order Summary</h5>
               <div className="d-flex justify-content-between mb-3">
                 <span>Subtotal</span>

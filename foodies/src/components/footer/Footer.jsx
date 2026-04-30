@@ -15,9 +15,8 @@ const Footer = () => {
               height={60}
               className="mb-3 rounded-circle footer-logo"
             />
-            <p>
-              Delicious food delivered fast to your doorstep. Enjoy fresh meals
-              from your favorite restaurants.
+            <p className="footer-copy">
+              Warm meals, smooth ordering, and a friendlier food experience for everyday cravings and weekend treats.
             </p>
           </div>
 
@@ -50,10 +49,10 @@ const Footer = () => {
           <div className="col-md-4 mb-4">
             <h5 className="mb-3">Contact</h5>
            
-            <p>
+            <p className="footer-contact">
               <i className="bi bi-telephone-fill me-2"></i>+91 7023641686
             </p>
-            <p>
+            <p className="footer-contact">
               <i className="bi bi-envelope-fill me-2"></i>kspk702364@gmail.com
             </p>
 
@@ -74,7 +73,7 @@ const Footer = () => {
 
         <div className="text-center">
           <p className="mb-0">
-            &copy; {new Date().getFullYear()} FoodApp. All rights reserved.
+            &copy; {new Date().getFullYear()} KSPK Foods. All rights reserved.
           </p>
         </div>
       </div>
