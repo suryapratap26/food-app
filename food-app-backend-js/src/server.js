@@ -13,7 +13,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8080;
-const MONGO_URI = process.env.MONGODB_URI;
+const MONGO_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/foodapp";
 
 if (!MONGO_URI) {
   console.error('❌ Missing MONGODB_URI in environment variables.');

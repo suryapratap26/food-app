@@ -1,0 +1,462 @@
+PROJECT REPORT DRAFT
+Title: KSPK Foods - Online Food Ordering and Delivery Management System
+
+Use this file as the base content for your college practical/project report.
+Replace the placeholder values like student name, roll number, guide name, and college name before final submission.
+
+============================================================
+1. COVER PAGE DETAILS
+============================================================
+
+Project Title:
+KSPK Foods - Online Food Ordering and Delivery Management System
+
+Submitted By:
+[Your Name]
+
+Roll Number:
+[Your Roll Number]
+
+Course:
+BCA Semester 6
+
+College Name:
+[Your College Name]
+
+Submitted To:
+[Guide/Faculty Name]
+
+Academic Year:
+[Academic Year]
+
+============================================================
+2. CERTIFICATE / DECLARATION SUMMARY
+============================================================
+
+This project report titled "KSPK Foods - Online Food Ordering and Delivery Management System" is a genuine work carried out by [Your Name] under the guidance of [Guide Name] for the partial fulfillment of the Bachelor of Computer Applications degree requirements. The work presented in this report is original and has not been submitted elsewhere for any other academic purpose.
+
+============================================================
+3. ACKNOWLEDGEMENT SUMMARY
+============================================================
+
+I express my sincere gratitude to my project guide, faculty members, and my college for their valuable guidance and support during the development of this project. I also thank my friends and family for their encouragement and motivation. Their suggestions and support helped me complete the project successfully.
+
+============================================================
+4. ABSTRACT
+============================================================
+
+KSPK Foods is a full-stack web-based food ordering platform developed to simplify the process of browsing food items, placing orders, managing restaurants, and monitoring operations through an admin panel. The system provides separate roles for customers, restaurants, and administrators. Customers can search for food, view details, add items to cart, place orders using Cash on Delivery or Stripe card payment, manage their profile and address, and write reviews after successful purchases. Restaurant users can register, wait for admin approval, and then manage menu items and orders. Administrators can supervise the entire platform, approve restaurants, manage food listings, monitor orders, and create admin accounts.
+
+The frontend of the project is built using React, Vite, Bootstrap, and Axios, while the backend is built using Node.js, Express.js, and MongoDB. The project demonstrates practical implementation of authentication, role-based access, payment integration, database operations, and modern web application development.
+
+============================================================
+5. INTRODUCTION
+============================================================
+
+Online food ordering systems have become an essential part of modern digital services. Customers prefer platforms that allow them to explore food items, compare options, and place orders from anywhere. Restaurants also benefit from such systems because they can manage menus and orders more efficiently. Traditional manual ordering methods are time-consuming, less organized, and difficult to scale.
+
+KSPK Foods was developed as a solution to these challenges. It is designed to provide a smooth and user-friendly digital platform where customers can order food, restaurants can manage their business workflow, and administrators can control overall platform activity. The project combines frontend and backend technologies to create a secure, responsive, and scalable application.
+
+============================================================
+6. OBJECTIVES OF THE PROJECT
+============================================================
+
+1. To develop an online food ordering platform for customers, restaurants, and administrators.
+2. To provide role-based login and secure access control.
+3. To allow customers to browse food items, add them to cart, and place orders easily.
+4. To integrate online card payment along with Cash on Delivery option.
+5. To provide restaurant approval and management features for admins.
+6. To maintain customer profiles, addresses, order history, ratings, and reviews.
+7. To create a modern full-stack web application using current development tools and frameworks.
+
+============================================================
+7. PROBLEM STATEMENT
+============================================================
+
+Many small and medium food businesses still depend on traditional order handling methods such as phone calls, handwritten notes, and offline records. These methods often lead to order mistakes, inefficient management, poor customer experience, and lack of proper tracking. There is a need for a digital platform that can streamline food ordering, order tracking, restaurant approval, and administrative management in one system.
+
+============================================================
+8. EXISTING SYSTEM
+============================================================
+
+In the existing manual or partially digital system, customers often face difficulty while ordering food because menu browsing, payment options, order tracking, and review systems are limited or unavailable. Restaurants may not have a proper dashboard for managing items and orders. Administrators also lack centralized control over restaurant approvals and food management.
+
+Limitations of the existing system:
+1. Manual order handling is slow and error-prone.
+2. Limited payment flexibility.
+3. No centralized admin control.
+4. Weak record management for customer profiles and order history.
+5. Lack of structured review and rating mechanism.
+6. Poor scalability for multiple restaurants and users.
+
+============================================================
+9. PROPOSED SYSTEM
+============================================================
+
+The proposed system, KSPK Foods, is a complete web-based food ordering platform that solves the limitations of the existing system. It provides dedicated interfaces and features for three types of users: Customer, Restaurant, and Admin.
+
+Main improvements in the proposed system:
+1. Centralized online ordering system.
+2. Separate dashboards for different user roles.
+3. Cart and checkout functionality.
+4. Stripe card payment and Cash on Delivery support.
+5. Restaurant approval mechanism by admin.
+6. Customer profile and address management.
+7. Backend-based food ratings and reviews.
+8. Order history, repeat order support, and food management.
+
+============================================================
+10. SCOPE OF THE PROJECT
+============================================================
+
+The scope of this project includes online browsing of food items, food details display, cart management, secure ordering, payment processing, review submission, restaurant account approval, dashboard-based management, and backend data storage. The system is intended for educational and practical implementation of a real-world food delivery platform.
+
+The project scope currently covers:
+1. Customer registration and login.
+2. Restaurant registration and approval.
+3. Admin monitoring and control.
+4. Food listing and management.
+5. Cart, checkout, and order placement.
+6. Order history and review submission.
+7. Contact message storage.
+
+============================================================
+11. TECHNOLOGY STACK
+============================================================
+
+Frontend Technologies:
+1. React 19
+2. Vite
+3. React Router
+4. Bootstrap 5
+5. Bootstrap Icons
+6. Axios
+7. React Toastify
+8. Stripe React SDK
+
+Backend Technologies:
+1. Node.js
+2. Express.js
+3. MongoDB
+4. Mongoose
+5. JWT Authentication
+6. Stripe
+7. Cloudinary
+8. Nodemailer
+9. Multer
+10. BcryptJS
+
+Development Tools:
+1. Visual Studio Code
+2. npm
+3. Git and GitHub
+4. Postman for API testing
+5. Browser Developer Tools
+
+============================================================
+12. SYSTEM REQUIREMENTS
+============================================================
+
+Hardware Requirements:
+1. Computer or laptop with minimum 4 GB RAM
+2. Dual-core or higher processor
+3. Stable internet connection
+4. Sufficient disk space for project files and dependencies
+
+Software Requirements:
+1. Windows operating system
+2. Node.js and npm
+3. MongoDB database
+4. Code editor such as VS Code
+5. Modern web browser such as Chrome or Edge
+
+============================================================
+13. PROJECT MODULES
+============================================================
+
+Customer Module:
+The customer module allows users to register, log in, search food items, filter by category, view food details, add products to cart, place orders, make payments, manage their address and profile, and view order history. Customers can also submit reviews only after a successful order.
+
+Restaurant Module:
+The restaurant module allows restaurant users to register on the platform and access the dashboard only after approval by the admin. Approved restaurants can add food items, manage menu data, and monitor customer orders.
+
+Admin Module:
+The admin module gives administrative control over the entire platform. Admin users can approve or reject restaurants, manage food items, monitor all orders, view dashboard insights, and create other admin accounts.
+
+Payment Module:
+The payment module supports two methods: Cash on Delivery and Stripe card payment. COD creates the order immediately, while card payment is processed using Stripe payment flow.
+
+Review Module:
+The review module stores ratings and reviews in the backend. It ensures that only customers who successfully ordered a food item are allowed to review it.
+
+Contact Module:
+The contact module saves customer messages in MongoDB and can also send emails if email credentials are configured.
+
+============================================================
+14. PROJECT ARCHITECTURE
+============================================================
+
+The project follows a client-server architecture.
+
+1. Frontend:
+The frontend is developed in React and provides all user interfaces such as home page, food exploration, cart, profile, order pages, and dashboards.
+
+2. Backend:
+The backend is built with Express.js and handles API requests, authentication, business logic, payment flow, database communication, and role-based access control.
+
+3. Database:
+MongoDB stores user data, food data, orders, reviews, contact messages, and restaurant details.
+
+4. External Services:
+Stripe is used for card payment processing, Cloudinary is used for media handling, and Nodemailer is used for email support where configured.
+
+============================================================
+15. FRONTEND STRUCTURE
+============================================================
+
+Active frontend folder:
+foodies
+
+Main frontend areas found in the project:
+1. assets
+2. components
+3. context
+4. pages
+5. service
+6. utils
+
+Important routes/pages in the application:
+1. Home page
+2. Explore Food page
+3. Contact page
+4. Food Details page
+5. Login and Register pages
+6. Cart page
+7. Place Order page
+8. My Orders page
+9. Complete Address page
+10. Profile page
+11. Admin Dashboard
+12. Manage Food
+13. All Orders
+14. Add Food
+15. Create Admin
+16. Pending Restaurants
+
+============================================================
+16. BACKEND STRUCTURE
+============================================================
+
+Active backend folder:
+food-app-backend-js
+
+Main backend source areas found in the project:
+1. config
+2. controllers
+3. middleware
+4. models
+5. routes
+6. services
+7. utils
+8. server.js
+
+Available route groups:
+1. /api
+2. /api/food
+3. /api/cart
+4. /api/orders
+
+Important backend responsibilities:
+1. Authentication and registration
+2. Food listing and food details
+3. Cart management
+4. Order creation and verification
+5. Review handling
+6. Contact form submission
+7. Admin restaurant approval
+
+============================================================
+17. DATABASE DETAILS
+============================================================
+
+The project uses MongoDB as the primary database. MongoDB is a NoSQL database that stores data in JSON-like documents, making it suitable for flexible and scalable web applications.
+
+Major data entities used in the project:
+1. User
+2. Food
+3. Order
+4. Cart
+5. Review
+6. Restaurant
+7. Contact Message
+
+Possible database fields include:
+1. User details such as name, email, password, role, and address
+2. Food details such as name, category, description, price, image, and rating
+3. Order details such as ordered items, payment method, amount, and status
+4. Review details such as customer name, rating, and feedback
+5. Restaurant details such as approval status and business information
+
+============================================================
+18. WORKING OF THE SYSTEM
+============================================================
+
+Signup Flow:
+Customer signup first collects account details. Address information is completed in the next step. Restaurant signup collects restaurant-related details during registration.
+
+Food Browsing Flow:
+Customers can browse food items without location restriction, search products, filter by category, and open a detailed page for each food item.
+
+Cart and Checkout Flow:
+Customers add items to cart and proceed to place the order. The application calculates order details and provides payment choices.
+
+Payment Flow:
+If Cash on Delivery is selected, the order is created immediately and marked for cash collection. If card payment is selected, the order is created with Stripe payment handling and confirmed on the frontend.
+
+Review Flow:
+Reviews are stored in the backend on food records. Only customers with a successful order containing that food item can submit a review.
+
+Admin Approval Flow:
+Restaurant accounts are not allowed to use the restaurant dashboard until an admin approves them.
+
+============================================================
+19. ROLE-BASED ACCESS CONTROL
+============================================================
+
+The project uses three main roles:
+1. CUSTOMER
+2. RESTAURANT
+3. ADMIN
+
+Role-based access helps protect sensitive pages and operations. Customer pages such as profile, address, cart, and order pages require login. Admin and restaurant dashboard pages are protected and accessible only to the appropriate roles. This improves application security and proper workflow management.
+
+============================================================
+20. KEY FEATURES OF THE PROJECT
+============================================================
+
+1. Full-stack web application
+2. Modern responsive frontend
+3. JWT-based authentication
+4. Role-based authorization
+5. Search and category filter
+6. Food details with ratings and reviews
+7. Shopping cart and checkout
+8. Cash on Delivery support
+9. Stripe card payment integration
+10. Customer order history
+11. Profile and address management
+12. Restaurant dashboard and menu management
+13. Admin dashboard with restaurant approval
+14. Contact form message storage
+
+============================================================
+21. TESTING SUMMARY
+============================================================
+
+The project was tested manually by running the frontend and backend locally and verifying the major functional flows. Testing focused on user registration, login, page navigation, food browsing, cart operations, order placement, payment flow, dashboard access, and role-based restrictions.
+
+Major testing areas:
+1. User authentication
+2. Protected routes
+3. Restaurant approval flow
+4. Add to cart and checkout
+5. Order management
+6. Review eligibility
+7. Contact form submission
+8. Admin dashboard operations
+
+Expected test result:
+The system performs the main operations successfully and provides a smooth workflow for customers, restaurants, and administrators.
+
+============================================================
+22. ADVANTAGES OF THE PROJECT
+============================================================
+
+1. Reduces manual effort in food ordering
+2. Improves ordering speed and accuracy
+3. Supports multiple user roles in one platform
+4. Provides secure login and access control
+5. Gives payment flexibility to customers
+6. Improves record management through database storage
+7. Makes restaurant and admin operations more organized
+8. Provides a better user experience with a modern interface
+
+============================================================
+23. LIMITATIONS OF THE PROJECT
+============================================================
+
+1. The platform currently depends on internet connectivity.
+2. Advanced real-time order tracking is not fully implemented.
+3. Automated test coverage is limited.
+4. Some future optimization can still be done for frontend bundle size and reporting features.
+
+============================================================
+24. FUTURE ENHANCEMENTS
+============================================================
+
+1. Route-based code splitting for performance improvement
+2. Better analytics and reporting dashboard
+3. Automated backend and frontend tests
+4. Live order tracking and notifications
+5. More detailed restaurant business metrics
+6. Improved admin form consistency
+7. Mobile app version in the future
+
+============================================================
+25. CONCLUSION
+============================================================
+
+KSPK Foods successfully demonstrates the development of a complete online food ordering and delivery management system using modern web technologies. The project solves common problems of manual food ordering by offering a centralized digital platform with customer, restaurant, and admin functionalities. It supports food exploration, secure login, cart management, order placement, payment processing, profile management, restaurant approval, and dashboard-based administration.
+
+This project helped in understanding full-stack development, API integration, database handling, role-based security, and real-world software architecture. It is a useful academic project as well as a practical implementation of a real business use case.
+
+============================================================
+26. BIBLIOGRAPHY / REFERENCES
+============================================================
+
+1. React official documentation
+2. Node.js official documentation
+3. Express.js official documentation
+4. MongoDB official documentation
+5. Mongoose official documentation
+6. Stripe official documentation
+7. Bootstrap official documentation
+8. MDN Web Docs
+
+============================================================
+27. VIVA / PRACTICAL PREPARATION POINTS
+============================================================
+
+You can prepare these short points for viva:
+1. Why did you choose this project?
+Answer: I chose this project because online food ordering is a real-world problem and it helped me learn full-stack development with authentication, payment integration, and database handling.
+
+2. Which technologies are used?
+Answer: React, Vite, Bootstrap, Node.js, Express.js, MongoDB, Mongoose, JWT, Stripe, Cloudinary, and Nodemailer.
+
+3. What are the main modules?
+Answer: Customer module, Restaurant module, Admin module, Payment module, Review module, and Contact module.
+
+4. What is the role of JWT?
+Answer: JWT is used for authentication and secure role-based access control.
+
+5. What is the database used?
+Answer: MongoDB is used as the database, with Mongoose for schema and model handling.
+
+6. What payment options are supported?
+Answer: Cash on Delivery and Stripe card payment.
+
+7. What makes your project different?
+Answer: It includes customer, restaurant, and admin roles together, along with approval flow, reviews, payment integration, and dashboard management.
+
+============================================================
+28. FINAL NOTE FOR REPORT WRITING
+============================================================
+
+While making the final project report in Word or PDF format:
+1. Add screenshots of home page, login page, food details page, cart page, checkout page, admin dashboard, and restaurant dashboard.
+2. Add diagrams if required, such as use case diagram, ER diagram, DFD, or system architecture diagram.
+3. Add your personal and academic details properly.
+4. Keep the chapter numbering and formatting consistent with your college format.
+5. Convert this text into formal report sections chapter by chapter.
+
