@@ -53,7 +53,7 @@ const Footer = () => {
               <i className="bi bi-telephone-fill me-2"></i>+91 7023641686
             </p>
             <p className="footer-contact">
-              <i className="bi bi-envelope-fill me-2"></i>kspk702364@gmail.com
+              <i className="bi bi-envelope-fill me-2"></i>suryapratapsinghchundawat66@gmail.com
             </p>
 
             <div className="d-flex gap-2 mt-2">
